@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceDefence.Engine;
 
 namespace SpaceDefence
 {
@@ -22,6 +23,7 @@ namespace SpaceDefence
         public Ship Player { get; private set; }
         public InputManager InputManager { get; private set; }
         public Game Game { get; private set; }
+        public GameState GameState { get; private set; }
 
         public static GameManager GetGameManager()
         {
@@ -36,6 +38,7 @@ namespace SpaceDefence
             _toBeAdded = new List<GameObject>();
             InputManager = new InputManager();
             RNG = new Random();
+            GameState = GameState.Playing;
         }
 
         public void Initialize(ContentManager content, Game game, Ship player)
@@ -80,43 +83,55 @@ namespace SpaceDefence
         
         public void Update(GameTime gameTime) 
         {
-            InputManager.Update();
-
-            // Handle input
-            HandleInput(InputManager);
-
-
-            // Update
-            foreach (GameObject gameObject in _gameObjects)
+            switch (GameState)
             {
-                gameObject.Update(gameTime);
-            }
+                case GameState.Playing:
+                    InputManager.Update();
 
-            // Check Collission
-            CheckCollision();
+                    // Handle input
+                    HandleInput(InputManager);
 
-            foreach (GameObject gameObject in _toBeAdded)
-            {
-                gameObject.Load(_content);
-                _gameObjects.Add(gameObject);
-            }
-            _toBeAdded.Clear();
 
-            foreach (GameObject gameObject in _toBeRemoved)
-            {
-                gameObject.Destroy();
-                _gameObjects.Remove(gameObject);
+                    // Update
+                    foreach (GameObject gameObject in _gameObjects)
+                    {
+                        gameObject.Update(gameTime);
+                    }
+
+                    // Check Collission
+                    CheckCollision();
+
+                    foreach (GameObject gameObject in _toBeAdded)
+                    {
+                        gameObject.Load(_content);
+                        _gameObjects.Add(gameObject);
+                    }
+                    _toBeAdded.Clear();
+
+                    foreach (GameObject gameObject in _toBeRemoved)
+                    {
+                        gameObject.Destroy();
+                        _gameObjects.Remove(gameObject);
+                    }
+                    _toBeRemoved.Clear();
+                    break;
             }
-            _toBeRemoved.Clear();
+            
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
         {
             spriteBatch.Begin();
-            foreach (GameObject gameObject in _gameObjects)
+            switch (GameState)
             {
-                gameObject.Draw(gameTime, spriteBatch);
+                case GameState.Playing:
+                    foreach (GameObject gameObject in _gameObjects)
+                    {
+                        gameObject.Draw(gameTime, spriteBatch);
+                    }
+                    break;
             }
+            
             spriteBatch.End();
         }
 
@@ -150,6 +165,11 @@ namespace SpaceDefence
             return new Vector2(
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Width),
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Height));
+        }
+
+        public void SetGameState(GameState gameState)
+        {
+            GameState = gameState;
         }
 
     }

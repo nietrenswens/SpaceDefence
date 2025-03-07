@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Collision;
 
 namespace SpaceDefence
 {
@@ -16,6 +17,7 @@ namespace SpaceDefence
         {
             _circleCollider = new CircleCollider(location, bulletSize);
             SetCollider(_circleCollider);
+            CollisionGroup = CollisionGroup.Bullet;
             _velocity = direction * speed;
         }
 

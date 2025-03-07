@@ -74,9 +74,26 @@ namespace SpaceDefence
         /// <returns>true there is any overlap between the Circle and the Rectangle.</returns>
         public override bool Intersects(RectangleCollider other)
         {
-            // TODO Implement
-            return  false;
+            var rectCenterCompensation = other.shape.Center.ToVector2();
+            
+            var compensatedBottomRight = new Vector2(other.shape.Bottom, other.shape.Right) - rectCenterCompensation;
+            var compensatedCircleCenter = Center - rectCenterCompensation;
+            var absCompensatedCircleCenter = new Vector2(Math.Abs(compensatedCircleCenter.X), Math.Abs(compensatedCircleCenter.Y));
+
+            if (absCompensatedCircleCenter.X < compensatedBottomRight.X)
+            {
+                return absCompensatedCircleCenter.Y - compensatedBottomRight.Y < Radius;
+            }
+            else if (absCompensatedCircleCenter.Y < compensatedBottomRight.Y)
+            {
+                return absCompensatedCircleCenter.X - compensatedBottomRight.X < Radius;
+            }
+            else
+            {
+                return (compensatedBottomRight - compensatedCircleCenter).Length() < Radius;
+            }
         }
+        
         /// <summary>
         /// Gets whether or not the Circle intersects the Line
         /// </summary>

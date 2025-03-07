@@ -27,6 +27,7 @@ namespace SpaceDefence
         {
             _rectangleCollider = new RectangleCollider(new Rectangle(Position, Point.Zero));
             SetCollider(_rectangleCollider);
+            CollisionGroup = CollisionGroup.Player;
             _velocity = Vector2.Zero;
         }
 

@@ -8,6 +8,7 @@ namespace SpaceDefence
     public abstract class GameObject
     {
         protected Collider collider;
+        public CollisionGroup CollisionGroup;
 
         /// <summary>
         /// Used to set the collider used for object collision.
