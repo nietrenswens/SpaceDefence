@@ -11,10 +11,12 @@ namespace SpaceDefence
         private CircleCollider _circleCollider;
         private Texture2D _texture;
         private const float PlayerClearance = 200;
+        private float _speed;
 
         public Alien()
         {
             CollisionGroup = CollisionGroup.Enemy;
+            _speed = 0.1f;
         }
 
         public override void Load(ContentManager content)
@@ -32,6 +34,7 @@ namespace SpaceDefence
             {
                 case CollisionGroup.Bullet:
                     RandomMove();
+                    _speed += 0.02f;
                     break;
                 case CollisionGroup.Player:
                     GameManager.GetGameManager().SetGameState(GameState.GameOver);
@@ -69,7 +72,7 @@ namespace SpaceDefence
             var direction = (playerLocation - _circleCollider.Center);
             direction.Normalize();
             
-            _circleCollider.Center += direction * 0.1f * gameTime.ElapsedGameTime.Milliseconds;
+            _circleCollider.Center += direction * _speed * gameTime.ElapsedGameTime.Milliseconds;
         }
 
 
