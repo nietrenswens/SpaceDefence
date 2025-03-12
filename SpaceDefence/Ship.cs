@@ -93,6 +93,7 @@ namespace SpaceDefence
             if (_buffTimer > 0)
                 _buffTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            var direction = LinePieceCollider.GetAngle(_velocity);
             move(_velocity, gameTime);
 
             base.Update(gameTime);

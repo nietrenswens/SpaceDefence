@@ -76,13 +76,17 @@ namespace SpaceDefence
         {
             var rectCenterCompensation = other.shape.Center.ToVector2();
             
-            var compensatedBottomRight = new Vector2(other.shape.Bottom, other.shape.Right) - rectCenterCompensation;
+            // Calculate how much we should move to get the rectangle center to (0,0)
+            var compensatedBottomRight = new Vector2(other.shape.Right, other.shape.Bottom) - rectCenterCompensation;
+            // Calculate how much we should move to get the circle center to its correct position when the rectangle center is at (0,0)
             var compensatedCircleCenter = Center - rectCenterCompensation;
+
+            // We make the value absolute so we only need to check the bottom right quadrant
             var absCompensatedCircleCenter = new Vector2(Math.Abs(compensatedCircleCenter.X), Math.Abs(compensatedCircleCenter.Y));
 
             if (absCompensatedCircleCenter.X < compensatedBottomRight.X)
             {
-                return absCompensatedCircleCenter.Y - compensatedBottomRight.Y < Radius;
+                    return absCompensatedCircleCenter.Y - compensatedBottomRight.Y < Radius;
             }
             else if (absCompensatedCircleCenter.Y < compensatedBottomRight.Y)
             {

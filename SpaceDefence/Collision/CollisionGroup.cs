@@ -5,7 +5,8 @@ namespace SpaceDefence.Collision;
 [Flags]
 public enum CollisionGroup
 {
-    Player = 0,
-    Enemy = 1,
-    Bullet = 2
+    None = 0,
+    Player = 1,
+    Enemy = 2,
+    Bullet = 3
 }

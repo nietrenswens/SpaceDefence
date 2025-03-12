@@ -14,6 +14,7 @@ namespace SpaceDefence
         {
             this.linePiece = linePiece;
             SetCollider(linePiece);
+            CollisionGroup = Collision.CollisionGroup.Bullet;
         }
         public Laser(LinePieceCollider linePiece, float length) : this(linePiece)
         {

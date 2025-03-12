@@ -10,7 +10,7 @@ namespace SpaceDefence
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
-        private const float PlayerClearance = 100;
+        private const float PlayerClearance = 200;
 
         public Alien()
         {
