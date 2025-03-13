@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine;
 using SpaceDefence.GameObjects.Playable;
 using SpaceDefence.Levels;
@@ -14,9 +15,11 @@ namespace SpaceDefence.Engine.Managers
         public Random RNG { get; private set; }
         public Ship Player { get; private set; }
         public InputManager InputManager { get; private set; }
+        public GameStats GameStats { get; private set; }
         public Game Game { get; private set; }
         public GameState GameState { get; private set; }
         public ContentManager ContentManager {get; private set; }
+        public GraphicsDevice GraphicsDevice { get; private set; }
 
         public static GameManager GetGameManager()
         {
@@ -27,11 +30,13 @@ namespace SpaceDefence.Engine.Managers
         public GameManager()
         {
             RNG = new Random();
+            GameStats = new GameStats();
             GameState = GameState.Playing;
         }
 
-        public void Initialize(ContentManager content, Game game, Ship player)
+        public void Initialize(ContentManager content, GraphicsDevice graphicsDevice, Game game, Ship player)
         {
+            GraphicsDevice = graphicsDevice;
             Game = game;
             ContentManager = content;
             Player = player;

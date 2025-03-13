@@ -5,7 +5,9 @@ using SpaceDefence.Collision;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
+using SpaceDefence.GameObjects.GFX;
 using SpaceDefence.Levels;
+using System.Linq;
 
 namespace SpaceDefence.GameObjects.Enemies
 {
@@ -60,6 +62,9 @@ namespace SpaceDefence.GameObjects.Enemies
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), Color.White);
+            float centerX = collider.GetBoundingBox().Center.ToVector2().X;
+            float topY = collider.GetBoundingBox().Top;
+            new HealthBar(new Vector2(centerX, topY), 200, 20, MaxHealth, Health).Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 
@@ -98,6 +103,17 @@ namespace SpaceDefence.GameObjects.Enemies
         private void Die()
         {
             LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
+
+            // TODO: use event
+            var gameManager = GameManager.GetGameManager();
+            gameManager.GameStats.AddKill();
+
+            int numberOfAliveEnemies = LevelManager.GetLevelManager().CurrentLevel.GameObjects.Where(go => go is Alien).Count() - 1;
+            var supposedNumberOfEnemies = gameManager.GameStats.NumberOfEnemies;
+            for (int i = supposedNumberOfEnemies - numberOfAliveEnemies; i > 0; i--)
+            {
+                LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Alien());
+            }
         }
 
     }

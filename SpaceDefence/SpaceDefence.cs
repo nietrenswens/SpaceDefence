@@ -16,7 +16,7 @@ namespace SpaceDefence
         public static int MAXY = 2000;
 
         private SpriteBatch _spriteBatch;
-        private GraphicsDeviceManager _graphics;
+        public GraphicsDeviceManager _graphics;
         private GameManager _gameManager;
 
         public SpaceDefence()
@@ -41,7 +41,7 @@ namespace SpaceDefence
             Ship player = new Ship(new Point(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/2));
 
             // Add the starting objects to the GameManager
-            _gameManager.Initialize(Content, this, player);
+            _gameManager.Initialize(Content, GraphicsDevice, this, player);
             base.Initialize();
         }
 

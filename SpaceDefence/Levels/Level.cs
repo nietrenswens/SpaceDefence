@@ -8,6 +8,8 @@ namespace SpaceDefence.Levels
 {
     public abstract class Level
     {
+        public List<GameObject> GameObjects { get { return _gameObjects; } }
+
         protected List<GameObject> _gameObjects;
         private List<GameObject> _toBeRemoved;
         private List<GameObject> _toBeAdded;
