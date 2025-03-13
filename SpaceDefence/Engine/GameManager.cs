@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceDefence.Engine;
+using SpaceDefence.Levels;
 
 namespace SpaceDefence
 {
@@ -14,16 +15,13 @@ namespace SpaceDefence
     {
         private static GameManager gameManager;
 
-        private List<GameObject> _gameObjects;
-        private List<GameObject> _toBeRemoved;
-        private List<GameObject> _toBeAdded;
-        private ContentManager _content;
-
         public Random RNG { get; private set; }
         public Ship Player { get; private set; }
         public InputManager InputManager { get; private set; }
         public Game Game { get; private set; }
         public GameState GameState { get; private set; }
+        public ContentManager ContentManager {get; private set; }
+        public Level CurrentLevel { get; private set; }
 
         public static GameManager GetGameManager()
         {
@@ -33,139 +31,19 @@ namespace SpaceDefence
         }
         public GameManager()
         {
-            _gameObjects = new List<GameObject>();
-            _toBeRemoved = new List<GameObject>();
-            _toBeAdded = new List<GameObject>();
             InputManager = new InputManager();
             RNG = new Random();
             GameState = GameState.Playing;
+            CurrentLevel = new GameLevel(InputManager);
         }
 
         public void Initialize(ContentManager content, Game game, Ship player)
         {
             Game = game;
-            _content = content;
+            ContentManager = content;
             Player = player;
         }
 
-        public void Load(ContentManager content)
-        {
-            foreach (GameObject gameObject in _gameObjects)
-            {
-                gameObject.Load(content);
-            }
-        }
-
-        public void HandleInput(InputManager inputManager)
-        {
-            foreach (GameObject gameObject in _gameObjects)
-            {
-                gameObject.HandleInput(this.InputManager);
-            }
-        }
-
-        public void CheckCollision()
-        {
-            // Checks once for every pair of 2 GameObjects if the collide.
-            for (int i = 0; i < _gameObjects.Count; i++)
-            {
-                for (int j = i+1; j < _gameObjects.Count; j++)
-                {
-                    if (_gameObjects[i].CheckCollision(_gameObjects[j]))
-                    {
-                        _gameObjects[i].OnCollision(_gameObjects[j]);
-                        _gameObjects[j].OnCollision(_gameObjects[i]);
-                    }
-                }
-            }
-            
-        }
-        
-        public void Update(GameTime gameTime) 
-        {
-            switch (GameState)
-            {
-                case GameState.Playing:
-                    InputManager.Update();
-
-                    // Handle input
-                    HandleInput(InputManager);
-
-
-                    // Update
-                    foreach (GameObject gameObject in _gameObjects)
-                    {
-                        gameObject.Update(gameTime);
-                    }
-
-                    // Check Collission
-                    CheckCollision();
-
-                    foreach (GameObject gameObject in _toBeAdded)
-                    {
-                        gameObject.Load(_content);
-                        _gameObjects.Add(gameObject);
-                    }
-                    _toBeAdded.Clear();
-
-                    foreach (GameObject gameObject in _toBeRemoved)
-                    {
-                        gameObject.Destroy();
-                        _gameObjects.Remove(gameObject);
-                    }
-                    _toBeRemoved.Clear();
-                    break;
-
-                case GameState.GameOver:
-                    break;
-            }
-            
-        }
-
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
-        {
-            spriteBatch.Begin();
-            switch (GameState)
-            {
-                case GameState.Playing:
-                    foreach (GameObject gameObject in _gameObjects)
-                    {
-                        gameObject.Draw(gameTime, spriteBatch);
-                    }
-                    break;
-
-                case GameState.GameOver:
-                    var font = _content.Load<SpriteFont>("font");
-                    var text = "Game Over";
-                    var textSize = font.MeasureString(text);
-                    spriteBatch.DrawString(font, text, new Vector2((SpaceDefence.SCREENWIDTH - textSize.X) / 2, (SpaceDefence.SCREENHEIGHT - textSize.Y) / 2), Color.White);
-                    break;
-            }
-            
-            spriteBatch.End();
-        }
-
-        /// <summary>
-        /// Add a new GameObject to the GameManager. 
-        /// The GameObject will be added at the start of the next Update step. 
-        /// Once it is added, the GameManager will ensure all steps of the game loop will be called on the object automatically. 
-        /// </summary>
-        /// <param name="gameObject"> The GameObject to add. </param>
-        public void AddGameObject(GameObject gameObject)
-        {
-            _toBeAdded.Add(gameObject);
-        }
-
-        /// <summary>
-        /// Remove GameObject from the GameManager. 
-        /// The GameObject will be removed at the start of the next Update step and its Destroy() mehtod will be called.
-        /// After that the object will no longer receive any updates.
-        /// </summary>
-        /// <param name="gameObject"> The GameObject to Remove. </param>
-        public void RemoveGameObject(GameObject gameObject)
-        {
-            _toBeRemoved.Add(gameObject);
-        }
 
         /// <summary>
         /// Get a random location on the screen.

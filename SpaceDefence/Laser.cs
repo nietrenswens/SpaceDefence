@@ -32,7 +32,7 @@ namespace SpaceDefence
         {
             base.Update(gameTime);
             if (lifespan < 0)
-                GameManager.GetGameManager().RemoveGameObject(this);
+                GameManager.GetGameManager().CurrentLevel.RemoveGameObject(this);
             lifespan -= gameTime.ElapsedGameTime.TotalSeconds;
         }
 
