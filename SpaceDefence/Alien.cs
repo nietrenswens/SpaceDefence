@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
 using SpaceDefence.Engine;
+using SpaceDefence.Levels;
 
 namespace SpaceDefence
 {
@@ -37,7 +38,7 @@ namespace SpaceDefence
                     _speed += 0.02f;
                     break;
                 case CollisionGroup.Player:
-                    GameManager.GetGameManager().SetGameState(GameState.GameOver);
+                    LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
                     break;
             }
             base.OnCollision(other);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceDefence.Engine;
 namespace SpaceDefence
 {
     public class SpaceDefence : Game
@@ -41,21 +42,21 @@ namespace SpaceDefence
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _gameManager.CurrentLevel.Load(Content);
+            LevelManager.GetLevelManager().CurrentLevel.Load(Content);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            _gameManager.CurrentLevel.Update(gameTime);
+            LevelManager.GetLevelManager().CurrentLevel.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            _gameManager.CurrentLevel.Draw(gameTime, _spriteBatch);
+            LevelManager.GetLevelManager().CurrentLevel.Draw(gameTime, _spriteBatch);
 
             base.Draw(gameTime);
         }

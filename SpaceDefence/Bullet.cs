@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
+using SpaceDefence.Engine;
 
 namespace SpaceDefence
 {
@@ -32,7 +33,7 @@ namespace SpaceDefence
             base.Update(gameTime);
             _circleCollider.Center += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (!GameManager.GetGameManager().Game.GraphicsDevice.Viewport.Bounds.Contains(_circleCollider.Center))
-                 GameManager.GetGameManager().CurrentLevel.RemoveGameObject(this);
+                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
 
         }
 
@@ -40,7 +41,7 @@ namespace SpaceDefence
         {
             if (other is Alien || other is Supply)
             {
-                GameManager.GetGameManager().CurrentLevel.RemoveGameObject(this);
+                LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             }
         }
 

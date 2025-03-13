@@ -6,23 +6,29 @@ namespace SpaceDefence
 {
     public class InputManager
     {
+        private static InputManager _inputManager;
+
         public KeyboardState LastKeyboardState { get; private set; }
         public KeyboardState CurrentKeyboardState { get; private set; }
         public MouseState LastMouseState { get; private set; }
         public MouseState CurrentMouseState { get; private set; }
 
-
+        public static InputManager GetInputManager()
+        {
+            if (_inputManager == null)
+                _inputManager = new InputManager();
+            return _inputManager;
+        }
 
         /// <summary>
         /// Keeps track of input states and contains methods to work with them.
         /// </summary>
-        public InputManager()
+        private InputManager()
         {
             LastKeyboardState = Keyboard.GetState();
             CurrentKeyboardState = Keyboard.GetState();
             CurrentMouseState = Mouse.GetState();
             LastMouseState = Mouse.GetState();
-
         }
         
         /// <summary>

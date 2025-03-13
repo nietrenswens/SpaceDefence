@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine;
 
 namespace SpaceDefence
 {
@@ -32,7 +33,7 @@ namespace SpaceDefence
         {
             base.Update(gameTime);
             if (lifespan < 0)
-                GameManager.GetGameManager().CurrentLevel.RemoveGameObject(this);
+                LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             lifespan -= gameTime.ElapsedGameTime.TotalSeconds;
         }
 

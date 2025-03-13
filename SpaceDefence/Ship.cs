@@ -3,6 +3,7 @@ using SpaceDefence.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine;
 
 namespace SpaceDefence
 {
@@ -55,11 +56,11 @@ namespace SpaceDefence
                 Vector2 turretExit = _rectangleCollider.shape.Center.ToVector2() + aimDirection * _baseTurret.Height / 2f;
                 if (_buffTimer <= 0)
                 {
-                    GameManager.GetGameManager().CurrentLevel.AddGameObject(new Bullet(turretExit, aimDirection, 150));
+                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Bullet(turretExit, aimDirection, 150));
                 }
                 else
                 {
-                    GameManager.GetGameManager().CurrentLevel.AddGameObject(new Laser(new LinePieceCollider(turretExit, _target.ToVector2()),400));
+                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Laser(new LinePieceCollider(turretExit, _target.ToVector2()),400));
                 }
             }
 

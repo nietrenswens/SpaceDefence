@@ -16,7 +16,6 @@ namespace SpaceDefence
         public Game Game { get; private set; }
         public GameState GameState { get; private set; }
         public ContentManager ContentManager {get; private set; }
-        public Level CurrentLevel { get; private set; }
 
         public static GameManager GetGameManager()
         {
@@ -26,10 +25,8 @@ namespace SpaceDefence
         }
         public GameManager()
         {
-            InputManager = new InputManager();
             RNG = new Random();
             GameState = GameState.Playing;
-            CurrentLevel = new GameLevel(InputManager);
         }
 
         public void Initialize(ContentManager content, Game game, Ship player)

@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Engine;
 using System.Collections.Generic;
 
 namespace SpaceDefence.Levels
@@ -11,14 +10,12 @@ namespace SpaceDefence.Levels
         private List<GameObject> _gameObjects;
         private List<GameObject> _toBeRemoved;
         private List<GameObject> _toBeAdded;
-        private InputManager _inputManager;
 
-        public Level(InputManager inputManager)
+        public Level()
         {
             _gameObjects = new List<GameObject>();
             _toBeRemoved = new List<GameObject>();
             _toBeAdded = new List<GameObject>();
-            _inputManager = inputManager;
         }
 
         public void Unload()
@@ -64,10 +61,11 @@ namespace SpaceDefence.Levels
 
         public void Update(GameTime gameTime)
         {
-            _inputManager.Update();
+            var inputManager = InputManager.GetInputManager();
+            inputManager.Update();
 
             // Handle input
-            HandleInput(_inputManager);
+            HandleInput(inputManager);
 
 
             // Update
