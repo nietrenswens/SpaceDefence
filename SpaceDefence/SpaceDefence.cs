@@ -10,6 +10,11 @@ namespace SpaceDefence
         public static int SCREENWIDTH = 1920;
         public static int SCREENHEIGHT = 1080;
 
+        public static int MINX = -2000;
+        public static int MAXX = 2000;
+        public static int MINY = -2000;
+        public static int MAXY = 2000;
+
         private SpriteBatch _spriteBatch;
         private GraphicsDeviceManager _graphics;
         private GameManager _gameManager;

@@ -17,10 +17,13 @@ namespace SpaceDefence.GameObjects.Playable
         private float _buffTimer = 0;
         private float _buffDuration = 10f;
         private float _acceleration = 30f;
-        private float _maxSpeed = 200f;
+        private float _maxSpeed = 400f;
         private RectangleCollider _rectangleCollider;
         private Point _target;
         private Vector2 _velocity;
+
+        public float Width => _rectangleCollider.shape.Width;
+        public float Height => _rectangleCollider.shape.Height;
 
         /// <summary>
         /// The player character
@@ -138,7 +141,14 @@ namespace SpaceDefence.GameObjects.Playable
         {
             var x = velocity.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
             var y = velocity.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            _rectangleCollider.shape.Location += new Point((int)x, (int)y);
+            var minX = SpaceDefence.MINX;
+            var minY = SpaceDefence.MINY;
+            var maxX = SpaceDefence.MAXX;
+            var maxY = SpaceDefence.MAXY;
+            
+            var clampedX = MathHelper.Clamp(_rectangleCollider.shape.Location.X + (int)x, minX, maxX - _rectangleCollider.shape.Width);
+            var clampedY = MathHelper.Clamp(_rectangleCollider.shape.Location.Y + (int)y, minY, maxY - _rectangleCollider.shape.Height);
+            _rectangleCollider.shape.Location = new Point((int)clampedX, (int)clampedY);
         }
     }
 }

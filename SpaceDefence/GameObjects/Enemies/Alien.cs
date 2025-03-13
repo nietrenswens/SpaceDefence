@@ -62,7 +62,6 @@ namespace SpaceDefence.GameObjects.Enemies
 
         public override void Update(GameTime gameTime)
         {
-            return;
             Move(gameTime);
             base.Update(gameTime);
         }
