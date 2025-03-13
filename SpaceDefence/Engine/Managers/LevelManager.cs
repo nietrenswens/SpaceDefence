@@ -1,6 +1,6 @@
 ﻿using SpaceDefence.Levels;
 
-namespace SpaceDefence.Engine
+namespace SpaceDefence.Engine.Managers
 {
     public class LevelManager
     {

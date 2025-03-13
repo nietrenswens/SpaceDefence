@@ -1,8 +1,8 @@
-﻿using System.Data;
-using System.Reflection.PortableExecutable;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using SpaceDefence.Levels;
 
-namespace SpaceDefence
+namespace SpaceDefence.Engine.Managers
 {
     public class InputManager
     {
@@ -93,6 +93,18 @@ namespace SpaceDefence
         public bool RightMousePress()
         {
             return CurrentMouseState.RightButton == ButtonState.Pressed && LastMouseState.RightButton == ButtonState.Released;
+        }
+
+        public Vector2 GetRelativeMousePosition()
+        {
+            var screenMousePosition = CurrentMouseState.Position.ToVector2();
+            if (LevelManager.GetLevelManager().CurrentLevel is not GameLevel)
+                return screenMousePosition;
+
+            var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
+
+            Matrix inverseTransform = Matrix.Invert(gameLevel.GetWorldTransformationMatrix());
+            return Vector2.Transform(screenMousePosition, inverseTransform);
         }
     }
 }

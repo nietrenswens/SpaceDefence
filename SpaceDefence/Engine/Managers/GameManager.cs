@@ -2,9 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using SpaceDefence.Engine;
+using SpaceDefence.GameObjects.Playable;
 using SpaceDefence.Levels;
 
-namespace SpaceDefence
+namespace SpaceDefence.Engine.Managers
 {
     public class GameManager
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Engine;
+using SpaceDefence.Engine.Managers;
 
-namespace SpaceDefence
+namespace SpaceDefence.GameObjects.Bullets
 {
     internal class Laser : GameObject
     {
@@ -17,6 +17,7 @@ namespace SpaceDefence
             SetCollider(linePiece);
             CollisionGroup = Collision.CollisionGroup.Bullet;
         }
+
         public Laser(LinePieceCollider linePiece, float length) : this(linePiece)
         {
             // Sets the length of the laser to be equal to the width of the screen, so it will always cover the full screen.
@@ -25,8 +26,8 @@ namespace SpaceDefence
 
         public override void Load(ContentManager content)
         {
+            sprite = content.Load<Texture2D>("Bullet");
             base.Load(content);
-            sprite = content.Load<Texture2D>("Laser");
         }
 
         public override void Update(GameTime gameTime)
@@ -39,8 +40,9 @@ namespace SpaceDefence
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            Rectangle target = new Rectangle((int)linePiece.Start.X, (int)linePiece.Start.Y, sprite.Width, (int)linePiece.Length);
-            spriteBatch.Draw(sprite, target, null,Color.White, linePiece.GetAngle(), new Vector2(sprite.Width/2f,sprite.Height),SpriteEffects.None,1 );
+            var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
+            Rectangle target = new Rectangle((int)linePiece.Start.X, (int)linePiece.Start.Y, 8, (int)linePiece.Length);
+            spriteBatch.Draw(sprite, target, null, Color.White, linePiece.GetAngle(), new Vector2(sprite.Width / 2f, sprite.Height), SpriteEffects.None, 1);
             base.Draw(gameTime, spriteBatch);
         }
     }

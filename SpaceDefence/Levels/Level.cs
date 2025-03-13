@@ -1,13 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine.Managers;
 using System.Collections.Generic;
 
 namespace SpaceDefence.Levels
 {
     public abstract class Level
     {
-        private List<GameObject> _gameObjects;
+        protected List<GameObject> _gameObjects;
         private List<GameObject> _toBeRemoved;
         private List<GameObject> _toBeAdded;
 
@@ -34,11 +35,11 @@ namespace SpaceDefence.Levels
             }
         }
 
-        public void HandleInput(InputManager inputManager)
+        public void HandleInput()
         {
             foreach (GameObject gameObject in _gameObjects)
             {
-                gameObject.HandleInput(inputManager);
+                gameObject.HandleInput();
             }
         }
 
@@ -65,7 +66,7 @@ namespace SpaceDefence.Levels
             inputManager.Update();
 
             // Handle input
-            HandleInput(inputManager);
+            HandleInput();
 
 
             // Update
@@ -93,7 +94,7 @@ namespace SpaceDefence.Levels
 
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             foreach (GameObject gameObject in _gameObjects)

@@ -3,7 +3,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
-using SpaceDefence.Engine;
+using SpaceDefence.Engine.Managers;
+using SpaceDefence.GameObjects.Enemies;
+using SpaceDefence.GameObjects.Powerups;
 
 namespace SpaceDefence
 {
@@ -32,8 +34,12 @@ namespace SpaceDefence
         {
             base.Update(gameTime);
             _circleCollider.Center += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (!GameManager.GetGameManager().Game.GraphicsDevice.Viewport.Bounds.Contains(_circleCollider.Center))
-                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
+            var player = GameManager.GetGameManager().Player;
+            var bulletToPlayer = player.GetPosition().Center.ToVector2() - _circleCollider.Center;
+            if (Math.Abs(bulletToPlayer.Length()) > 1000f)
+            {
+                LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
+            }
 
         }
 

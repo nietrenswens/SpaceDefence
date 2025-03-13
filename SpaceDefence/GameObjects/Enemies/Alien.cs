@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
-using SpaceDefence.Engine;
+using SpaceDefence.Engine.Managers;
 using SpaceDefence.Levels;
 
-namespace SpaceDefence
+namespace SpaceDefence.GameObjects.Enemies
 {
     internal class Alien : GameObject
     {
@@ -48,7 +48,7 @@ namespace SpaceDefence
         {
             GameManager gm = GameManager.GetGameManager();
             _circleCollider.Center = gm.RandomScreenLocation();
-            
+
             Vector2 centerOfPlayer = gm.Player.GetPosition().Center.ToVector2();
             while ((_circleCollider.Center - centerOfPlayer).Length() < PlayerClearance)
                 _circleCollider.Center = gm.RandomScreenLocation();
@@ -62,6 +62,7 @@ namespace SpaceDefence
 
         public override void Update(GameTime gameTime)
         {
+            return;
             Move(gameTime);
             base.Update(gameTime);
         }
@@ -69,10 +70,10 @@ namespace SpaceDefence
         private void Move(GameTime gameTime)
         {
             var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
-            
-            var direction = (playerLocation - _circleCollider.Center);
+
+            var direction = playerLocation - _circleCollider.Center;
             direction.Normalize();
-            
+
             _circleCollider.Center += direction * _speed * gameTime.ElapsedGameTime.Milliseconds;
         }
 

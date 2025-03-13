@@ -1,10 +1,9 @@
-﻿using Microsoft.Xna.Framework.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine.Managers;
+using SpaceDefence.GameObjects.Enemies;
+using SpaceDefence.GameObjects.Powerups;
 namespace SpaceDefence.Levels
 {
     public class GameLevel : Level
@@ -15,6 +14,25 @@ namespace SpaceDefence.Levels
             AddGameObject(new Alien());
             AddGameObject(new Supply());
             base.Load(content);
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            
+            spriteBatch.Begin(transformMatrix: GetWorldTransformationMatrix());
+            foreach(var gameObject in _gameObjects)
+            {
+                gameObject.Draw(gameTime, spriteBatch);
+            }
+            spriteBatch.End();
+        }
+
+        public Matrix GetWorldTransformationMatrix()
+        {
+            var player = GameManager.GetGameManager().Player;
+            var screenWidth = SpaceDefence.SCREENWIDTH;
+            var screenHeight = SpaceDefence.SCREENHEIGHT;
+            return Matrix.CreateTranslation(-player.GetPosition().X, -player.GetPosition().Y, 0) * Matrix.CreateScale(0.99f) * Matrix.CreateTranslation(screenWidth / 2, screenHeight / 2, 0);
         }
     }
 }

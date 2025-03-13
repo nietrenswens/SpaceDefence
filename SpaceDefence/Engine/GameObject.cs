@@ -36,7 +36,7 @@ namespace SpaceDefence
         /// Override this if you want your GameObject to react to user input.
         /// </summary>
         /// <param name="inputManager"> Keeps track of user input. </param>
-        public virtual void HandleInput(InputManager inputManager)
+        public virtual void HandleInput()
         {
 
         }

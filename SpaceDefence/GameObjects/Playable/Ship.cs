@@ -3,16 +3,18 @@ using SpaceDefence.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Engine;
+using SpaceDefence.Engine.Managers;
+using SpaceDefence.GameObjects.Bullets;
+using SpaceDefence.Levels;
 
-namespace SpaceDefence
+namespace SpaceDefence.GameObjects.Playable
 {
     public class Ship : GameObject
     {
         private Texture2D _shipBody;
         private Texture2D _baseTurret;
         private Texture2D _laserTurret;
-        private float _buffTimer = 10;
+        private float _buffTimer = 0;
         private float _buffDuration = 10f;
         private float _acceleration = 30f;
         private float _maxSpeed = 200f;
@@ -39,17 +41,17 @@ namespace SpaceDefence
             _baseTurret = content.Load<Texture2D>("base_turret");
             _laserTurret = content.Load<Texture2D>("laser_turret");
             _rectangleCollider.shape.Size = _shipBody.Bounds.Size;
-            _rectangleCollider.shape.Location -= new Point(_shipBody.Width/2, _shipBody.Height/2);
+            _rectangleCollider.shape.Location -= new Point(_shipBody.Width / 2, _shipBody.Height / 2);
             base.Load(content);
         }
 
 
 
-        public override void HandleInput(InputManager inputManager)
+        public override void HandleInput()
         {
-            base.HandleInput(inputManager);
-            _target = inputManager.CurrentMouseState.Position;
-            if(inputManager.LeftMousePress())
+            var inputManager = InputManager.GetInputManager();
+            _target = inputManager.GetRelativeMousePosition().ToPoint();
+            if (inputManager.LeftMousePress())
             {
 
                 Vector2 aimDirection = LinePieceCollider.GetDirection(GetPosition().Center, _target);
@@ -57,10 +59,9 @@ namespace SpaceDefence
                 if (_buffTimer <= 0)
                 {
                     LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Bullet(turretExit, aimDirection, 150));
-                }
-                else
+                } else
                 {
-                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Laser(new LinePieceCollider(turretExit, _target.ToVector2()),400));
+                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Laser(new LinePieceCollider(turretExit, _target.ToVector2()), 400));
                 }
             }
 
@@ -86,6 +87,7 @@ namespace SpaceDefence
                 _velocity.Normalize();
                 _velocity *= _maxSpeed;
             }
+            base.HandleInput();
         }
 
         public override void Update(GameTime gameTime)
@@ -112,8 +114,7 @@ namespace SpaceDefence
                 Rectangle turretLocation = _baseTurret.Bounds;
                 turretLocation.Location = _rectangleCollider.shape.Center;
                 spriteBatch.Draw(_baseTurret, turretLocation, null, Color.White, aimAngle, turretLocation.Size.ToVector2() / 2f, SpriteEffects.None, 0);
-            }
-            else
+            } else
             {
                 Rectangle turretLocation = _laserTurret.Bounds;
                 turretLocation.Location = _rectangleCollider.shape.Center;
@@ -138,23 +139,6 @@ namespace SpaceDefence
             var x = velocity.X * (float)gameTime.ElapsedGameTime.TotalSeconds;
             var y = velocity.Y * (float)gameTime.ElapsedGameTime.TotalSeconds;
             _rectangleCollider.shape.Location += new Point((int)x, (int)y);
-
-            if (_rectangleCollider.shape.Right < 0 && velocity.X < 0)
-            {
-                _rectangleCollider.shape.X = SpaceDefence.SCREENWIDTH;
-            }
-            else if (_rectangleCollider.shape.Left > SpaceDefence.SCREENWIDTH && velocity.X > 0)
-            {
-                _rectangleCollider.shape.X = 0;
-            }
-            else if (_rectangleCollider.shape.Bottom < 0 && velocity.Y < 0)
-            {
-                _rectangleCollider.shape.Y = SpaceDefence.SCREENHEIGHT;
-            }
-            else if (_rectangleCollider.shape.Top > SpaceDefence.SCREENHEIGHT && velocity.Y > 0)
-            {
-                _rectangleCollider.shape.Y = 0;
-            }
         }
     }
 }

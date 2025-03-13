@@ -2,8 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine.Managers;
 
-namespace SpaceDefence
+namespace SpaceDefence.GameObjects.Powerups
 {
     internal class Supply : GameObject
     {
