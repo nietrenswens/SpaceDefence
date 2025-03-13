@@ -7,7 +7,7 @@ using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Enemies;
 using SpaceDefence.GameObjects.Powerups;
 
-namespace SpaceDefence
+namespace SpaceDefence.GameObjects.Bullets
 {
     internal class Bullet : GameObject
     {

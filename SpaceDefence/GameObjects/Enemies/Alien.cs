@@ -2,12 +2,14 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
+using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
+using SpaceDefence.GameObjects.Bullets;
 using SpaceDefence.Levels;
 
 namespace SpaceDefence.GameObjects.Enemies
 {
-    internal class Alien : GameObject
+    internal class Alien : LivingGameObject
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
@@ -18,6 +20,8 @@ namespace SpaceDefence.GameObjects.Enemies
         {
             CollisionGroup = CollisionGroup.Enemy;
             _speed = 0.1f;
+            MaxHealth = 40;
+            Health = MaxHealth;
         }
 
         public override void Load(ContentManager content)
@@ -34,8 +38,7 @@ namespace SpaceDefence.GameObjects.Enemies
             switch (other.CollisionGroup)
             {
                 case CollisionGroup.Bullet:
-                    RandomMove();
-                    _speed += 0.02f;
+                    TakeDamage(other);
                     break;
                 case CollisionGroup.Player:
                     LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
@@ -76,6 +79,26 @@ namespace SpaceDefence.GameObjects.Enemies
             _circleCollider.Center += direction * _speed * gameTime.ElapsedGameTime.Milliseconds;
         }
 
+        private void TakeDamage(GameObject projectile)
+        {
+            switch (projectile)
+            {
+                case Bullet bullet:
+                    Health -= 10;
+                    break;
+                case Laser laser:
+                    Health -= 50;
+                    break;
+            }
+
+            if (Health <= 0)
+                Die();
+        }
+
+        private void Die()
+        {
+            LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
+        }
 
     }
 }
