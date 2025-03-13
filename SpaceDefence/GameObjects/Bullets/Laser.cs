@@ -9,7 +9,7 @@ namespace SpaceDefence.GameObjects.Bullets
     {
         private LinePieceCollider linePiece;
         private Texture2D sprite;
-        private double lifespan = .25f;
+        private double lifespan = .1f;
 
         public Laser(LinePieceCollider linePiece)
         {
@@ -26,23 +26,24 @@ namespace SpaceDefence.GameObjects.Bullets
 
         public override void Load(ContentManager content)
         {
-            sprite = content.Load<Texture2D>("Bullet");
+            sprite = content.Load<Texture2D>("Laser");
             base.Load(content);
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
             if (lifespan < 0)
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             lifespan -= gameTime.ElapsedGameTime.TotalSeconds;
+            base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
             Rectangle target = new Rectangle((int)linePiece.Start.X, (int)linePiece.Start.Y, 8, (int)linePiece.Length);
-            spriteBatch.Draw(sprite, target, null, Color.White, linePiece.GetAngle(), new Vector2(sprite.Width / 2f, sprite.Height), SpriteEffects.None, 1);
+            float angle = linePiece.GetAngle();
+            spriteBatch.Draw(sprite, target, null, Color.White, angle, new Vector2(sprite.Width / 2, sprite.Height), SpriteEffects.None, 0);
             base.Draw(gameTime, spriteBatch);
         }
     }

@@ -32,7 +32,7 @@ namespace SpaceDefence.Levels
             var player = GameManager.GetGameManager().Player;
             var screenWidth = SpaceDefence.SCREENWIDTH;
             var screenHeight = SpaceDefence.SCREENHEIGHT;
-            return Matrix.CreateTranslation(-player.GetPosition().X, -player.GetPosition().Y, 0) * Matrix.CreateScale(0.99f) * Matrix.CreateTranslation(screenWidth / 2, screenHeight / 2, 0);
+            return Matrix.CreateTranslation(-player.GetPosition().X, -player.GetPosition().Y, 0) * Matrix.CreateScale(1.2f) * Matrix.CreateTranslation(screenWidth / 2, screenHeight / 2, 0);
         }
     }
 }
