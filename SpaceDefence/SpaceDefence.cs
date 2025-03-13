@@ -5,8 +5,8 @@ namespace SpaceDefence
 {
     public class SpaceDefence : Game
     {
-        public static int SCREENWIDTH = 1280;
-        public static int SCREENHEIGHT = 720;
+        public static int SCREENWIDTH = 1920;
+        public static int SCREENHEIGHT = 1080;
 
         private SpriteBatch _spriteBatch;
         private GraphicsDeviceManager _graphics;

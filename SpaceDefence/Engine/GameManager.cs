@@ -115,6 +115,9 @@ namespace SpaceDefence
                     }
                     _toBeRemoved.Clear();
                     break;
+
+                case GameState.GameOver:
+                    break;
             }
             
         }
@@ -129,6 +132,13 @@ namespace SpaceDefence
                     {
                         gameObject.Draw(gameTime, spriteBatch);
                     }
+                    break;
+
+                case GameState.GameOver:
+                    var font = _content.Load<SpriteFont>("font");
+                    var text = "Game Over";
+                    var textSize = font.MeasureString(text);
+                    spriteBatch.DrawString(font, text, new Vector2((SpaceDefence.SCREENWIDTH - textSize.X) / 2, (SpaceDefence.SCREENHEIGHT - textSize.Y) / 2), Color.White);
                     break;
             }
             
