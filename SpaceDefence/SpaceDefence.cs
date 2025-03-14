@@ -69,7 +69,5 @@ namespace SpaceDefence
             base.Draw(gameTime);
         }
 
-
-
     }
 }

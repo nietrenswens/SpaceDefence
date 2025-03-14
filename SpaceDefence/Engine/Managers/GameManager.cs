@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine;
+using SpaceDefence.Engine.States;
 using SpaceDefence.GameObjects.Playable;
 using SpaceDefence.Levels;
 
@@ -14,7 +15,6 @@ namespace SpaceDefence.Engine.Managers
 
         public Random RNG { get; private set; }
         public Ship Player { get; private set; }
-        public InputManager InputManager { get; private set; }
         public GameStats GameStats { get; private set; }
         public Game Game { get; private set; }
         public ContentManager ContentManager {get; private set; }
@@ -49,6 +49,11 @@ namespace SpaceDefence.Engine.Managers
             return new Vector2(
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Width),
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Height));
+        }
+
+        public void Exit()
+        {
+            Game.Exit();
         }
 
     }

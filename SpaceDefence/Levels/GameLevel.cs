@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.Engine.States.Levels;
 using SpaceDefence.GameObjects.Enemies;
-using SpaceDefence.GameObjects.GUI;
+using SpaceDefence.GameObjects.GUI.PauseMenu;
 using SpaceDefence.GameObjects.Powerups;
 using System;
 namespace SpaceDefence.Levels
@@ -68,6 +68,8 @@ namespace SpaceDefence.Levels
             }
             if (_state == GameState.Playing)
                 base.HandleInput();
+            else if (_state == GameState.Paused)
+                _pauseMenu.HandleInput();
         }
 
         public Matrix GetWorldTransformationMatrix()
