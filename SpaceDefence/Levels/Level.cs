@@ -37,7 +37,7 @@ namespace SpaceDefence.Levels
             }
         }
 
-        public void HandleInput()
+        public virtual void HandleInput()
         {
             foreach (GameObject gameObject in _gameObjects)
             {
@@ -62,7 +62,7 @@ namespace SpaceDefence.Levels
 
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             var inputManager = InputManager.GetInputManager();
             inputManager.Update();

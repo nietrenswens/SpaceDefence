@@ -25,22 +25,16 @@ namespace SpaceDefence.Engine
                 case >2 and < 5:
                     NumberOfEnemies = 2;
                     break;
-                case > 4 and < 10:
+                case > 4 and < 20:
                     NumberOfEnemies = 4;
-                    break;
-                case > 9 and < 20:
-                    NumberOfEnemies = 6;
                     break;
                 case > 19 and < 30:
                     NumberOfEnemies = 8;
                     break;
-                case > 29 and < 40:
-                    NumberOfEnemies = 10;
-                    break;
-                case > 39 and < 50:
+                case > 29 and < 50:
                     NumberOfEnemies = 12;
                     break;
-                case > 49 and < 60:
+                case > 49:
                     NumberOfEnemies = 15;
                     break;
             }

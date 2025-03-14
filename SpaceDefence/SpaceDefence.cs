@@ -10,10 +10,10 @@ namespace SpaceDefence
         public static int SCREENWIDTH = 1920;
         public static int SCREENHEIGHT = 1080;
 
-        public static int MINX = -2000;
-        public static int MAXX = 2000;
-        public static int MINY = -2000;
-        public static int MAXY = 2000;
+        public static int MINX = 0;
+        public static int MAXX = 4000;
+        public static int MINY = 0;
+        public static int MAXY = 4000;
 
         private SpriteBatch _spriteBatch;
         public GraphicsDeviceManager _graphics;
@@ -38,7 +38,9 @@ namespace SpaceDefence
             _gameManager = GameManager.GetGameManager();
 
             // Place the player at the center of the screen
-            Ship player = new Ship(new Point(GraphicsDevice.Viewport.Width/2,GraphicsDevice.Viewport.Height/2));
+            var spawnX = (MINX + MAXX) / 2;
+            var spawnY = (MINY + MAXY) / 2;
+            Ship player = new Ship(new Point(spawnX, spawnY));
 
             // Add the starting objects to the GameManager
             _gameManager.Initialize(Content, GraphicsDevice, this, player);

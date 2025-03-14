@@ -45,7 +45,7 @@ namespace SpaceDefence.Engine.Managers
         /// <summary>
         /// Gets whether the <paramref name="key"/> is currently down.
         /// </summary>
-        /// <param name="key">The key for which you wish to know the state</param>
+        /// <param name="key">The key for which you wish to know the _state</param>
         /// <returns>true if the key is currently down, otherwise false</returns>
         public bool IsKeyDown(Keys key)
         {
@@ -56,7 +56,7 @@ namespace SpaceDefence.Engine.Managers
         /// <summary>
         /// Gets whether the <paramref name="key"/> is currently up.
         /// </summary>
-        /// <param name="key">The key for which you wish to know the state</param>
+        /// <param name="key">The key for which you wish to know the _state</param>
         /// <returns>true if the key is currently up, otherwise false</returns>
         public bool IsKeyUp(Keys key)
         {
@@ -68,7 +68,7 @@ namespace SpaceDefence.Engine.Managers
         /// <summary>
         /// Gets whether the <paramref name="key"/> was pressed in this frame.
         /// </summary>
-        /// <param name="key">The key for which you wish to know the state</param>
+        /// <param name="key">The key for which you wish to know the _state</param>
         /// <returns>true if the key is currently down and was up in the previous step, otherwise false</returns>
         public bool IsKeyPress(Keys key) 
         {

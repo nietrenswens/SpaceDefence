@@ -17,7 +17,6 @@ namespace SpaceDefence.Engine.Managers
         public InputManager InputManager { get; private set; }
         public GameStats GameStats { get; private set; }
         public Game Game { get; private set; }
-        public GameState GameState { get; private set; }
         public ContentManager ContentManager {get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
 
@@ -31,7 +30,6 @@ namespace SpaceDefence.Engine.Managers
         {
             RNG = new Random();
             GameStats = new GameStats();
-            GameState = GameState.Playing;
         }
 
         public void Initialize(ContentManager content, GraphicsDevice graphicsDevice, Game game, Ship player)
@@ -51,11 +49,6 @@ namespace SpaceDefence.Engine.Managers
             return new Vector2(
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Width),
                 RNG.Next(0, Game.GraphicsDevice.Viewport.Height));
-        }
-
-        public void SetGameState(GameState gameState)
-        {
-            GameState = gameState;
         }
 
     }

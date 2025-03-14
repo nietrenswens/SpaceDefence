@@ -30,6 +30,16 @@ namespace SpaceDefence.GameObjects.GFX
             _greenPixel.SetData(new[] { Color.Green });
         }
 
+        public void SetHealth(float health)
+        {
+            _currentHealth = health;
+        }
+
+        public void SetLocation(Vector2 centerTopOfObject)
+        {
+            _centerTopOfObject = centerTopOfObject;
+        }
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             var x = _centerTopOfObject.X - _width / 2;

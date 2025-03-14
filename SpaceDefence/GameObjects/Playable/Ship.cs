@@ -48,8 +48,6 @@ namespace SpaceDefence.GameObjects.Playable
             base.Load(content);
         }
 
-
-
         public override void HandleInput()
         {
             var inputManager = InputManager.GetInputManager();

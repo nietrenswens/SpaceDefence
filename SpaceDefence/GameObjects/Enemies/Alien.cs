@@ -15,7 +15,7 @@ namespace SpaceDefence.GameObjects.Enemies
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
-        private const float PlayerClearance = 200;
+        private const float PlayerClearance = 960;
         private float _speed;
 
         public Alien()
@@ -62,9 +62,6 @@ namespace SpaceDefence.GameObjects.Enemies
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), Color.White);
-            float centerX = collider.GetBoundingBox().Center.ToVector2().X;
-            float topY = collider.GetBoundingBox().Top;
-            new HealthBar(new Vector2(centerX, topY), 200, 20, MaxHealth, Health).Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 
