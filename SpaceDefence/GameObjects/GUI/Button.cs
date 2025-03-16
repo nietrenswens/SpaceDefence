@@ -12,14 +12,18 @@ namespace SpaceDefence.GameObjects.GUI
     {
         protected Collider _buttonHitbox;
         protected Texture2D _buttonTexture;
+        protected Texture2D _hoverTexture;
         private string? _buttonType;
         protected Point _location;
+
+        protected bool _hovering;
 
         public event EventHandler<ButtonEventArgs> ButtonPressed;
 
         public Button(Point location)
         {
             _location = location;
+            _hovering = false;
         }
 
         public void SetButtonType(string type)
@@ -40,16 +44,24 @@ namespace SpaceDefence.GameObjects.GUI
                 throw new Exception("Button type not set.");
             }
             var inputManager = InputManager.GetInputManager();
-            if (inputManager.LeftMousePress() && _buttonHitbox.Contains(inputManager.CurrentMouseState.Position.ToVector2()))
+            if (_buttonHitbox.Contains(inputManager.CurrentMouseState.Position.ToVector2()))
             {
-                ButtonPressed?.Invoke(this, new ButtonEventArgs { Type = _buttonType });
+                _hovering = true;
+                if (inputManager.LeftMousePress())
+                {
+                    ButtonPressed?.Invoke(this, new ButtonEventArgs { Type = _buttonType });
+                }
             }
-            base.HandleInput();
+            else
+            {
+                _hovering = false;
+            }
+                base.HandleInput();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_buttonTexture, _buttonHitbox.GetBoundingBox(), Color.White);
+            spriteBatch.Draw(_hovering ? _hoverTexture : _buttonTexture, _buttonHitbox.GetBoundingBox(), Color.White);
             base.Draw(gameTime, spriteBatch);
         }
 
