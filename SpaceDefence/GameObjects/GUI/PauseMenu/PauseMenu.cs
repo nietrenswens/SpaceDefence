@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.Levels;
 using SpaceDefence.Utilities;
@@ -52,18 +51,12 @@ namespace SpaceDefence.GameObjects.GUI.PauseMenu
 
         public void OnResumeButtonPressed(object o, ButtonEventArgs args)
         {
-            if (args.Type == PauseMenuButtonTypes.RESUME)
-            {
-                (LevelManager.GetLevelManager().CurrentLevel as GameLevel).TogglePause();
-            }
+            (LevelManager.GetLevelManager().CurrentLevel as GameLevel).TogglePause();
         }
 
         public void OnQuitButtonPressed(object o, ButtonEventArgs args)
         {
-            if (args.Type == PauseMenuButtonTypes.QUIT)
-            {
-                GameManager.GetGameManager().Exit();
-            }
+            GameManager.GetGameManager().Exit();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SpaceDefence.Engine.Managers
 
         private LevelManager()
         {
-            CurrentLevel = new GameLevel();
+            CurrentLevel = new MainMenuLevel();
         }
 
         public static LevelManager GetLevelManager()
