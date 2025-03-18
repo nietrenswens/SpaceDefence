@@ -14,21 +14,22 @@ namespace SpaceDefence.Levels
     {
         private GameState _state;
         private PauseMenu _pauseMenu;
+        private EnemyManager _enemyManager;
 
 
         public GameLevel()
         {
             _state = GameState.Playing;
             _pauseMenu = new PauseMenu();
+            _enemyManager = new EnemyManager();
         }
 
         public override void Load(ContentManager content)
         {
             AddGameObject(GameManager.GetGameManager().Player);
-            AddGameObject(new Alien());
             AddGameObject(new Supply());
 
-            SpawnAsteroids(8);
+            _enemyManager.SpawnEnemies();
 
             _pauseMenu.Load(content);
             base.Load(content);
@@ -57,6 +58,7 @@ namespace SpaceDefence.Levels
         {
             if (_state == GameState.Playing)
             {
+                _enemyManager.Update(gameTime);
                 base.Update(gameTime);
             } 
             else if (_state == GameState.Paused)
@@ -97,14 +99,6 @@ namespace SpaceDefence.Levels
                 _state = GameState.Playing;
             else
                 _state = GameState.Paused;
-        }
-
-        private void SpawnAsteroids(int amount)
-        {
-            for (int i = 0; i < amount; i++)
-            {
-                AddGameObject(new Asteroid());
-            }
         }
     }
 }

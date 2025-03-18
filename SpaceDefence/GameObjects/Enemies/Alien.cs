@@ -115,13 +115,6 @@ namespace SpaceDefence.GameObjects.Enemies
             var gameManager = GameManager.GetGameManager();
             gameManager.GameStats.AddKill();
 
-            int numberOfAliveEnemies = LevelManager.GetLevelManager().CurrentLevel.GameObjects.Where(go => go is Alien).Count() - 1;
-            var supposedNumberOfEnemies = gameManager.GameStats.NumberOfEnemies;
-            for (int i = supposedNumberOfEnemies - numberOfAliveEnemies; i > 0; i--)
-            {
-                LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Alien());
-            }
-
             LevelManager.GetLevelManager().CurrentLevel.AddAnimation(new ExplosionAnimation(_circleCollider.Center.ToPoint()));
         }
 

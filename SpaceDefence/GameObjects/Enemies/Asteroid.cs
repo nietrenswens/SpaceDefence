@@ -11,7 +11,6 @@ namespace SpaceDefence.GameObjects.Enemies
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
-        private Texture2D _pixel;
         public Asteroid()
         {
         }
