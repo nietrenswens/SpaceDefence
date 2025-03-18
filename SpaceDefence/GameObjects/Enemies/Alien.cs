@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Animations;
 using SpaceDefence.Collision;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
@@ -59,10 +60,10 @@ namespace SpaceDefence.GameObjects.Enemies
                 _circleCollider.Center = gm.RandomScreenLocation();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), Color.White);
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
 
         public override void Update(GameTime gameTime)
@@ -101,7 +102,6 @@ namespace SpaceDefence.GameObjects.Enemies
         {
             LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
 
-            // TODO: use event
             var gameManager = GameManager.GetGameManager();
             gameManager.GameStats.AddKill();
 
@@ -111,6 +111,8 @@ namespace SpaceDefence.GameObjects.Enemies
             {
                 LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Alien());
             }
+
+            LevelManager.GetLevelManager().CurrentLevel.AddAnimation(new ExplosionAnimation(_circleCollider.Center.ToPoint()));
         }
 
     }

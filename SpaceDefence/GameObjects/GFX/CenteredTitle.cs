@@ -14,12 +14,12 @@ namespace SpaceDefence.GameObjects.GFX
             _text = text;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             Vector2 size = _font.MeasureString(_text);
             Vector2 position = new Vector2((SpaceDefence.SCREENWIDTH - size.X) / 2, (SpaceDefence.SCREENHEIGHT - size.Y) / 2);
             spriteBatch.DrawString(_font, _text, position, Color.White);
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
 
         public override void Load(ContentManager content)

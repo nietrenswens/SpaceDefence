@@ -44,10 +44,10 @@ namespace SpaceDefence.GameObjects.Powerups
                 _rectangleCollider.shape.Location = gm.RandomScreenLocation().ToPoint();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, _rectangleCollider.shape, Color.White);
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
 
 

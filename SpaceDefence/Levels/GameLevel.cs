@@ -35,14 +35,18 @@ namespace SpaceDefence.Levels
         {
             
             spriteBatch.Begin(transformMatrix: GetWorldTransformationMatrix());
-            foreach(var gameObject in _gameObjects)
+            foreach(var gameObject in _gameObjectManager.Objects)
             {
-                gameObject.Draw(gameTime, spriteBatch);
+                gameObject.Draw(spriteBatch, gameTime);
+            }
+            foreach (var animation in _animations)
+            {
+                animation.Draw(spriteBatch, gameTime);
             }
             spriteBatch.End();
             spriteBatch.Begin();
             if (_state == GameState.Paused)
-                _pauseMenu.Draw(gameTime, spriteBatch);
+                _pauseMenu.Draw(spriteBatch, gameTime);
             spriteBatch.End();
         }
 

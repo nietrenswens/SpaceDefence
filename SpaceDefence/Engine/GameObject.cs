@@ -2,10 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine.Interfaces;
 
 namespace SpaceDefence
 {
-    public abstract class GameObject
+    public abstract class GameObject : Engine.Interfaces.IDrawable, IUpdatable, ILoadable
     {
         protected Collider collider;
         public CollisionGroup CollisionGroup;
@@ -77,7 +78,7 @@ namespace SpaceDefence
         /// </summary>
         /// <param name="gameTime"> The amount of time that has elapsed since the last draw call. </param>
         /// <param name="spriteBatch"> The Spritebatch to write your textures to. </param>
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) 
+        public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime) 
         { 
 
         }

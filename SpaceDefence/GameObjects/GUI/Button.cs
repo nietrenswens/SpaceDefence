@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
-using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using System;
 
@@ -11,7 +10,7 @@ namespace SpaceDefence.GameObjects.GUI
     public abstract class Button : GameObject
     {
         protected Collider _buttonHitbox;
-        protected Texture2D _buttonTexture;
+        protected Texture2D? _buttonTexture;
         protected Texture2D _hoverTexture;
         private string? _buttonType;
         protected Point _location;
@@ -59,10 +58,10 @@ namespace SpaceDefence.GameObjects.GUI
                 base.HandleInput();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_hovering ? _hoverTexture : _buttonTexture, _buttonHitbox.GetBoundingBox(), Color.White);
-            base.Draw(gameTime, spriteBatch);
+            spriteBatch.Draw(_hovering ? (_hoverTexture ?? _buttonTexture) : _buttonTexture, _buttonHitbox.GetBoundingBox(), Color.White);
+            base.Draw(spriteBatch, gameTime);
         }
 
     }

@@ -40,7 +40,7 @@ namespace SpaceDefence.GameObjects.GFX
             _centerTopOfObject = centerTopOfObject;
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             var x = _centerTopOfObject.X - _width / 2;
             var y = _centerTopOfObject.Y - _offsetY - _height / 2;

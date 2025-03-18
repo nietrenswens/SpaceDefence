@@ -103,7 +103,7 @@ namespace SpaceDefence.GameObjects.Playable
             base.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             var direction = LinePieceCollider.GetAngle(_velocity);
             Rectangle shipLocation = _rectangleCollider.shape;
@@ -121,7 +121,7 @@ namespace SpaceDefence.GameObjects.Playable
                 turretLocation.Location = _rectangleCollider.shape.Center;
                 spriteBatch.Draw(_laserTurret, turretLocation, null, Color.White, aimAngle, turretLocation.Size.ToVector2() / 2f, SpriteEffects.None, 0);
             }
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
 
 

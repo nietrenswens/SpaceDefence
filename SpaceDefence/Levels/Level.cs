@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using System.Collections.Generic;
 
@@ -8,22 +9,25 @@ namespace SpaceDefence.Levels
 {
     public abstract class Level
     {
-        public List<GameObject> GameObjects { get { return _gameObjects; } }
+        public List<GameObject> GameObjects { get { return _gameObjectManager.Objects; } }
 
-        protected List<GameObject> _gameObjects;
-        private List<GameObject> _toBeRemoved;
-        private List<GameObject> _toBeAdded;
+        protected ObjectManager<GameObject> _gameObjectManager;
+
+        protected List<Animation> _animationsToBeAdded;
+        protected List<Animation> _animations;
+        protected List<Animation> _animationsToBeRemoved;
 
         public Level()
         {
-            _gameObjects = new List<GameObject>();
-            _toBeRemoved = new List<GameObject>();
-            _toBeAdded = new List<GameObject>();
+            _gameObjectManager = new();
+            _animations = new();
+            _animationsToBeAdded = new();
+            _animationsToBeRemoved = new();
         }
 
         public void Unload()
         {
-            foreach (GameObject gameObject in _gameObjects)
+            foreach (GameObject gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Destroy();
             }
@@ -31,7 +35,7 @@ namespace SpaceDefence.Levels
 
         public virtual void Load(ContentManager content)
         {
-            foreach (GameObject gameObject in _gameObjects)
+            foreach (GameObject gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Load(content);
             }
@@ -39,7 +43,7 @@ namespace SpaceDefence.Levels
 
         public virtual void HandleInput()
         {
-            foreach (GameObject gameObject in _gameObjects)
+            foreach (GameObject gameObject in _gameObjectManager.Objects)
             {
                 gameObject.HandleInput();
             }
@@ -48,14 +52,14 @@ namespace SpaceDefence.Levels
         public void CheckCollision()
         {
             // Checks once for every pair of 2 GameObjects if the collide.
-            for (int i = 0; i < _gameObjects.Count; i++)
+            for (int i = 0; i < _gameObjectManager.Objects.Count; i++)
             {
-                for (int j = i + 1; j < _gameObjects.Count; j++)
+                for (int j = i + 1; j < _gameObjectManager.Objects.Count; j++)
                 {
-                    if (_gameObjects[i].CheckCollision(_gameObjects[j]))
+                    if (_gameObjectManager.Objects[i].CheckCollision(_gameObjectManager.Objects[j]))
                     {
-                        _gameObjects[i].OnCollision(_gameObjects[j]);
-                        _gameObjects[j].OnCollision(_gameObjects[i]);
+                        _gameObjectManager.Objects[i].OnCollision(_gameObjectManager.Objects[j]);
+                        _gameObjectManager.Objects[j].OnCollision(_gameObjectManager.Objects[i]);
                     }
                 }
             }
@@ -72,7 +76,7 @@ namespace SpaceDefence.Levels
 
 
             // Update
-            foreach (GameObject gameObject in _gameObjects)
+            foreach (GameObject gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Update(gameTime);
             }
@@ -80,28 +84,39 @@ namespace SpaceDefence.Levels
             // Check Collission
             CheckCollision();
 
-            foreach (GameObject gameObject in _toBeAdded)
-            {
-                gameObject.Load(GameManager.GetGameManager().ContentManager);
-                _gameObjects.Add(gameObject);
-            }
-            _toBeAdded.Clear();
+            _gameObjectManager.Update(gameTime);
 
-            foreach (GameObject gameObject in _toBeRemoved)
+            foreach (Animation animation in _animationsToBeAdded)
             {
-                gameObject.Destroy();
-                _gameObjects.Remove(gameObject);
+                _animations.Add(animation);
             }
-            _toBeRemoved.Clear();
+            _animationsToBeAdded.Clear();
+
+            foreach (Animation animation in _animations)
+            {
+                animation.Update(gameTime);
+                if (animation.IsFinished)
+                {
+                    _animationsToBeRemoved.Add(animation);
+                }
+            }
+
+            foreach (Animation animation in _animationsToBeRemoved)
+            {
+                _animations.Remove(animation);
+            }
+            _animationsToBeRemoved.Clear();
 
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            foreach (GameObject gameObject in _gameObjects)
+            _gameObjectManager.Draw(spriteBatch, gameTime);
+
+            foreach (Animation animation in _animations)
             {
-                gameObject.Draw(gameTime, spriteBatch);
+                animation.Draw(spriteBatch, gameTime);
             }
             spriteBatch.End();
         }
@@ -114,7 +129,7 @@ namespace SpaceDefence.Levels
         /// <param name="gameObject"> The GameObject to add. </param>
         public void AddGameObject(GameObject gameObject)
         {
-            _toBeAdded.Add(gameObject);
+            _gameObjectManager.AddObject(gameObject);
         }
 
         /// <summary>
@@ -125,7 +140,12 @@ namespace SpaceDefence.Levels
         /// <param name="gameObject"> The GameObject to Remove. </param>
         public void RemoveGameObject(GameObject gameObject)
         {
-            _toBeRemoved.Add(gameObject);
+            _gameObjectManager.RemoveObject(gameObject);
+        }
+
+        public void AddAnimation(Animation animation)
+        {
+            _animationsToBeAdded.Add(animation);
         }
     }
 }

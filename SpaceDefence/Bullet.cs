@@ -51,10 +51,10 @@ namespace SpaceDefence.GameObjects.Bullets
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), Color.Red);
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
     }
 }

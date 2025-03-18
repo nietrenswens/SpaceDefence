@@ -38,13 +38,13 @@ namespace SpaceDefence.GameObjects.Bullets
             base.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
             Rectangle target = new Rectangle((int)linePiece.Start.X, (int)linePiece.Start.Y, 8, (int)linePiece.Length);
             float angle = linePiece.GetAngle();
             spriteBatch.Draw(sprite, target, null, Color.White, angle, new Vector2(sprite.Width / 2, sprite.Height), SpriteEffects.None, 0);
-            base.Draw(gameTime, spriteBatch);
+            base.Draw(spriteBatch, gameTime);
         }
     }
 }

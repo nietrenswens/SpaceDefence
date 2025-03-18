@@ -21,11 +21,11 @@ namespace SpaceDefence.Engine
             base.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             if (_healthBar != null)
-                _healthBar.Draw(gameTime, spriteBatch);
-            base.Draw(gameTime, spriteBatch);
+                _healthBar.Draw(spriteBatch, gameTime);
+            base.Draw(spriteBatch, gameTime);
         }
 
         private float GetCenterX()
