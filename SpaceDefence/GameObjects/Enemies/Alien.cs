@@ -6,8 +6,7 @@ using SpaceDefence.Collision;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
-using SpaceDefence.GameObjects.GFX;
-using SpaceDefence.Levels;
+using SpaceDefence.GameObjects.Playable;
 using System.Linq;
 
 namespace SpaceDefence.GameObjects.Enemies
@@ -16,8 +15,11 @@ namespace SpaceDefence.GameObjects.Enemies
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
-        private const float PlayerClearance = 960;
         private float _speed;
+        private int _playerDamageTimer = 0;
+
+        private const int _playerDamageTimeIntervals = 400;
+        private const float PlayerClearance = 960;
 
         public Alien()
         {
@@ -25,6 +27,7 @@ namespace SpaceDefence.GameObjects.Enemies
             _speed = 0.1f;
             MaxHealth = 40;
             Health = MaxHealth;
+            ShowHealthBar = true;
         }
 
         public override void Load(ContentManager content)
@@ -44,7 +47,13 @@ namespace SpaceDefence.GameObjects.Enemies
                     TakeDamage(other);
                     break;
                 case CollisionGroup.Player:
-                    LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
+                    if (other is not Ship player)
+                        return;
+                    if (_playerDamageTimer < 0)
+                    {
+                        player.TakeDamage(10);
+                        _playerDamageTimer = _playerDamageTimeIntervals;
+                    }
                     break;
             }
             base.OnCollision(other);
@@ -68,6 +77,7 @@ namespace SpaceDefence.GameObjects.Enemies
 
         public override void Update(GameTime gameTime)
         {
+            _playerDamageTimer -= gameTime.ElapsedGameTime.Milliseconds;
             Move(gameTime);
             base.Update(gameTime);
         }

@@ -6,10 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
 using SpaceDefence.Levels;
+using SpaceDefence.Engine;
 
 namespace SpaceDefence.GameObjects.Playable
 {
-    public class Ship : GameObject
+    public class Ship : LivingGameObject
     {
         private Texture2D _shipBody;
         private Texture2D _baseTurret;
@@ -35,6 +36,9 @@ namespace SpaceDefence.GameObjects.Playable
             SetCollider(_rectangleCollider);
             CollisionGroup = CollisionGroup.Player;
             _velocity = Vector2.Zero;
+            MaxHealth = 100;
+            Health = MaxHealth;
+            ShowHealthBar = true;
         }
 
         public override void Load(ContentManager content)
@@ -122,6 +126,15 @@ namespace SpaceDefence.GameObjects.Playable
                 spriteBatch.Draw(_laserTurret, turretLocation, null, Color.White, aimAngle, turretLocation.Size.ToVector2() / 2f, SpriteEffects.None, 0);
             }
             base.Draw(spriteBatch, gameTime);
+        }
+
+        public void TakeDamage(int damage)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
+            }
         }
 
 

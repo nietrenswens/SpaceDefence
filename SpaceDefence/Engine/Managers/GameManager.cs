@@ -17,12 +17,12 @@ namespace SpaceDefence.Engine.Managers
         public Ship Player { get; private set; }
         public GameStats GameStats { get; private set; }
         public Game Game { get; private set; }
-        public ContentManager ContentManager {get; private set; }
+        public ContentManager ContentManager { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
 
         public static GameManager GetGameManager()
         {
-            if(gameManager == null)
+            if (gameManager == null)
                 gameManager = new GameManager();
             return gameManager;
         }

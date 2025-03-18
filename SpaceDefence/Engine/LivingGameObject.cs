@@ -9,6 +9,7 @@ namespace SpaceDefence.Engine
     {
         public float Health { get; protected set; }
         public float MaxHealth { get; protected set; }
+        public bool ShowHealthBar { get; protected set; }
 
         private HealthBar? _healthBar;
 
@@ -23,7 +24,7 @@ namespace SpaceDefence.Engine
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            if (_healthBar != null)
+            if (_healthBar != null && ShowHealthBar)
                 _healthBar.Draw(spriteBatch, gameTime);
             base.Draw(spriteBatch, gameTime);
         }
