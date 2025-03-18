@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine.Managers;
+using SpaceDefence.GameObjects.Player.Weapons;
 
 namespace SpaceDefence.GameObjects.Powerups
 {
@@ -30,7 +31,7 @@ namespace SpaceDefence.GameObjects.Powerups
         public override void OnCollision(GameObject other)
         {
             RandomMove();
-            GameManager.GetGameManager().Player.Buff();
+            GameManager.GetGameManager().Player.UpgradeWeapon(new LaserGun());
             base.OnCollision(other);
         }
 

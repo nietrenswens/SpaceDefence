@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceDefence.Engine.Managers;
-using SpaceDefence.GameObjects.Playable;
+using SpaceDefence.GameObjects.Player;
 namespace SpaceDefence
 {
     public class SpaceDefence : Game

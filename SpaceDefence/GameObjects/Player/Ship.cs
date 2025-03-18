@@ -1,5 +1,4 @@
-﻿using System;
-using SpaceDefence.Collision;
+﻿using SpaceDefence.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,13 +7,15 @@ using SpaceDefence.GameObjects.Bullets;
 using SpaceDefence.Levels;
 using SpaceDefence.Engine;
 using SpaceDefence.Animations;
+using SpaceDefence.GameObjects.Player.Weapons;
 
-namespace SpaceDefence.GameObjects.Playable
+namespace SpaceDefence.GameObjects.Player
 {
     public class Ship : LivingGameObject
     {
+        private Weapon _weapon;
+
         private Texture2D _shipBody;
-        private Texture2D _baseTurret;
         private Texture2D _laserTurret;
         private float _buffTimer = 0;
         private float _buffDuration = 10f;
@@ -26,6 +27,7 @@ namespace SpaceDefence.GameObjects.Playable
 
         public float Width => _rectangleCollider.shape.Width;
         public float Height => _rectangleCollider.shape.Height;
+        public Point Center => _rectangleCollider.shape.Center;
 
         /// <summary>
         /// The player character
@@ -40,36 +42,23 @@ namespace SpaceDefence.GameObjects.Playable
             MaxHealth = 100;
             Health = MaxHealth;
             ShowHealthBar = true;
+            _weapon = new DefaultGun();
         }
 
         public override void Load(ContentManager content)
         {
             // Ship sprites from: https://zintoki.itch.io/space-breaker
             _shipBody = content.Load<Texture2D>("ship_body");
-            _baseTurret = content.Load<Texture2D>("base_turret");
-            _laserTurret = content.Load<Texture2D>("laser_turret");
             _rectangleCollider.shape.Size = _shipBody.Bounds.Size;
             _rectangleCollider.shape.Location -= new Point(_shipBody.Width / 2, _shipBody.Height / 2);
+            _weapon.Load(content);
             base.Load(content);
         }
 
         public override void HandleInput()
         {
+            _weapon.HandleInput();
             var inputManager = InputManager.GetInputManager();
-            _target = inputManager.GetRelativeMousePosition().ToPoint();
-            if (inputManager.LeftMousePress())
-            {
-
-                Vector2 aimDirection = LinePieceCollider.GetDirection(GetPosition().Center, _target);
-                Vector2 turretExit = _rectangleCollider.shape.Center.ToVector2() + aimDirection * _baseTurret.Height / 2f;
-                if (_buffTimer <= 0)
-                {
-                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Bullet(turretExit, aimDirection, 150));
-                } else
-                {
-                    LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Laser(new LinePieceCollider(turretExit, _target.ToVector2()), 400));
-                }
-            }
 
             if (inputManager.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.A))
             {
@@ -99,8 +88,15 @@ namespace SpaceDefence.GameObjects.Playable
         public override void Update(GameTime gameTime)
         {
             // Update the Buff timer
+            _weapon.Update(gameTime);
             if (_buffTimer > 0)
                 _buffTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (_buffTimer < 0)
+            {
+                _buffTimer = 0;
+                ResetWeapon();
+            }
 
             var direction = LinePieceCollider.GetAngle(_velocity);
             move(_velocity, gameTime);
@@ -114,18 +110,7 @@ namespace SpaceDefence.GameObjects.Playable
             Rectangle shipLocation = _rectangleCollider.shape;
             shipLocation.Location = _rectangleCollider.shape.Center;
             spriteBatch.Draw(_shipBody, shipLocation, null, Color.White, direction, _shipBody.Bounds.Size.ToVector2() / 2f, SpriteEffects.None, 0);
-            float aimAngle = LinePieceCollider.GetAngle(LinePieceCollider.GetDirection(GetPosition().Center, _target));
-            if (_buffTimer <= 0)
-            {
-                Rectangle turretLocation = _baseTurret.Bounds;
-                turretLocation.Location = _rectangleCollider.shape.Center;
-                spriteBatch.Draw(_baseTurret, turretLocation, null, Color.White, aimAngle, turretLocation.Size.ToVector2() / 2f, SpriteEffects.None, 0);
-            } else
-            {
-                Rectangle turretLocation = _laserTurret.Bounds;
-                turretLocation.Location = _rectangleCollider.shape.Center;
-                spriteBatch.Draw(_laserTurret, turretLocation, null, Color.White, aimAngle, turretLocation.Size.ToVector2() / 2f, SpriteEffects.None, 0);
-            }
+            _weapon.Draw(spriteBatch, gameTime);
             base.Draw(spriteBatch, gameTime);
         }
 
@@ -136,6 +121,19 @@ namespace SpaceDefence.GameObjects.Playable
             {
                 Die();
             }
+        }
+
+        public void UpgradeWeapon(Weapon weapon)
+        {
+            _weapon = weapon;
+            _weapon.Load(GameManager.GetGameManager().ContentManager);
+            Buff();
+        }
+
+        public void ResetWeapon()
+        {
+            _weapon = new DefaultGun();
+            _weapon.Load(GameManager.GetGameManager().ContentManager);
         }
 
         public override void Die()
@@ -166,7 +164,7 @@ namespace SpaceDefence.GameObjects.Playable
             var minY = SpaceDefence.MINY;
             var maxX = SpaceDefence.MAXX;
             var maxY = SpaceDefence.MAXY;
-            
+
             var clampedX = MathHelper.Clamp(_rectangleCollider.shape.Location.X + (int)x, minX, maxX - _rectangleCollider.shape.Width);
             var clampedY = MathHelper.Clamp(_rectangleCollider.shape.Location.Y + (int)y, minY, maxY - _rectangleCollider.shape.Height);
             _rectangleCollider.shape.Location = new Point((int)clampedX, (int)clampedY);

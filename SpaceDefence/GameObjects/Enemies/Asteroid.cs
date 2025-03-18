@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
-using SpaceDefence.GameObjects.Playable;
+using SpaceDefence.GameObjects.Player;
 
 namespace SpaceDefence.GameObjects.Enemies
 {

@@ -4,6 +4,6 @@ namespace SpaceDefence.Engine.Interfaces
 {
     public interface IUpdatable
     {
-        void Update(GameTime gameTime) { }
+        void Update(GameTime gameTime);
     }
 }

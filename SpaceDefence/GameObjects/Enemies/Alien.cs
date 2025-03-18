@@ -6,8 +6,7 @@ using SpaceDefence.Collision;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
-using SpaceDefence.GameObjects.Playable;
-using System.Linq;
+using SpaceDefence.GameObjects.Player;
 
 namespace SpaceDefence.GameObjects.Enemies
 {

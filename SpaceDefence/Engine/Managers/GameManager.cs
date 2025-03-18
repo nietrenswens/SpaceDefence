@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.States;
-using SpaceDefence.GameObjects.Playable;
+using SpaceDefence.GameObjects.Player;
 using SpaceDefence.Levels;
 
 namespace SpaceDefence.Engine.Managers
