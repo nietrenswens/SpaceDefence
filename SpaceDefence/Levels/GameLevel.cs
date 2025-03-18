@@ -27,6 +27,9 @@ namespace SpaceDefence.Levels
             AddGameObject(GameManager.GetGameManager().Player);
             AddGameObject(new Alien());
             AddGameObject(new Supply());
+
+            SpawnAsteroids(8);
+
             _pauseMenu.Load(content);
             base.Load(content);
         }
@@ -94,6 +97,14 @@ namespace SpaceDefence.Levels
                 _state = GameState.Playing;
             else
                 _state = GameState.Paused;
+        }
+
+        private void SpawnAsteroids(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                AddGameObject(new Asteroid());
+            }
         }
     }
 }

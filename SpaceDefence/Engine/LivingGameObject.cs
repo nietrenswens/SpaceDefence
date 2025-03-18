@@ -29,6 +29,15 @@ namespace SpaceDefence.Engine
             base.Draw(spriteBatch, gameTime);
         }
 
+        public virtual void TakeDamage(float damage)
+        {
+            Health -= damage;
+            if (Health <= 0)
+                Destroy();
+        }
+
+        public virtual void Die() { }
+
         private float GetCenterX()
         {
             return collider.GetBoundingBox().Center.ToVector2().X;

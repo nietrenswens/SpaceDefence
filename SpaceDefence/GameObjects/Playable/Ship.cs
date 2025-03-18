@@ -7,6 +7,7 @@ using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
 using SpaceDefence.Levels;
 using SpaceDefence.Engine;
+using SpaceDefence.Animations;
 
 namespace SpaceDefence.GameObjects.Playable
 {
@@ -133,8 +134,17 @@ namespace SpaceDefence.GameObjects.Playable
             Health -= damage;
             if (Health <= 0)
             {
-                LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
+                Die();
             }
+        }
+
+        public override void Die()
+        {
+            var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
+            gameLevel.RemoveGameObject(this);
+            gameLevel.AddAnimation(new ExplosionAnimation(_rectangleCollider.shape.Center));
+
+            LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
         }
 
 

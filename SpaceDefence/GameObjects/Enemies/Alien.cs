@@ -108,7 +108,7 @@ namespace SpaceDefence.GameObjects.Enemies
                 Die();
         }
 
-        private void Die()
+        public override void Die()
         {
             LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
 
