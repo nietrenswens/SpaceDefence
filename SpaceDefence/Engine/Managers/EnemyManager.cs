@@ -13,7 +13,7 @@ namespace SpaceDefence.Engine.Managers
             var level = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
 
             Spawn<Asteroid>(8);
-            Spawn<Alien>(1);
+            Spawn<Alien>(6);
         }
 
         public void Update(GameTime gameTime)

@@ -7,6 +7,7 @@ using SpaceDefence.GameObjects.Powerups;
 using System;
 using SpaceDefence.Engine;
 using SpaceDefence.GameObjects.Player;
+using System.Linq;
 
 namespace SpaceDefence.GameObjects.Bullets
 {
@@ -51,10 +52,15 @@ namespace SpaceDefence.GameObjects.Bullets
 
         public override void OnCollision(GameObject other)
         {
-            if ((other is LivingGameObject && other is not Ship) || other is Supply)
+            if (other is LivingGameObject && other is not Ship)
             {
                 var go = (LivingGameObject)other;
                 go.Die();
+                var radiusCircleCollider = new CircleCollider(_circleCollider.GetBoundingBox().Center.ToVector2(), 80);
+                CheckCollisionWithOtherEnemies(radiusCircleCollider);
+                LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
+            } else if (other is Supply)
+            {
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             }
         }
@@ -63,6 +69,18 @@ namespace SpaceDefence.GameObjects.Bullets
         {
             spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), null, Color.White, _angle, new Vector2(_texture.Width / 2, _texture.Height / 2), SpriteEffects.None, 0);
             base.Draw(spriteBatch, gameTime);
+        }
+
+        private void CheckCollisionWithOtherEnemies(CircleCollider radiusCircleCollider)
+        {
+            var enemies = LevelManager.GetLevelManager().CurrentLevel.GameObjects.OfType<Alien>();
+            foreach (var enemy in enemies)
+            {
+                if (enemy.CheckCollision(radiusCircleCollider))
+                {
+                    enemy.Die();
+                }
+            }
         }
     }
 }

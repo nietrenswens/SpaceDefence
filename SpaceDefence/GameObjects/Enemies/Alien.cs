@@ -81,6 +81,11 @@ namespace SpaceDefence.GameObjects.Enemies
             base.Update(gameTime);
         }
 
+        public bool CheckCollision(Collider collider)
+        {
+            return _circleCollider.CheckIntersection(collider);
+        }
+
         private void Move(GameTime gameTime)
         {
             var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
