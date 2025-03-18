@@ -1,32 +1,38 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Collision;
+using Microsoft.Xna.Framework;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Enemies;
 using SpaceDefence.GameObjects.Powerups;
+using System;
+using SpaceDefence.Engine;
+using SpaceDefence.GameObjects.Player;
 
 namespace SpaceDefence.GameObjects.Bullets
 {
-    public class Bullet : GameObject
+    class Missle : GameObject
     {
         private Texture2D _texture;
         private CircleCollider _circleCollider;
         private Vector2 _velocity;
-        public float bulletSize = 4;
+        private Point _startLocation;
+        public float bulletSize = 16;
+        private float _angle;
 
-        public Bullet(Vector2 location, Vector2 direction, float speed)
+        public Missle(Vector2 location, Vector2 direction, float speed)
         {
             _circleCollider = new CircleCollider(location, bulletSize);
             SetCollider(_circleCollider);
-            CollisionGroup = CollisionGroup.Bullet;
+            CollisionGroup = Collision.CollisionGroup.Bullet;
             _velocity = direction * speed;
+            _startLocation = location.ToPoint();
+
+            _angle = new LinePieceCollider(location, location + direction).GetAngle();
         }
 
         public override void Load(ContentManager content)
         {
-            _texture = content.Load<Texture2D>("Bullet");
+            _texture = content.Load<Texture2D>("Missle");
             base.Load(content);
         }
 
@@ -45,15 +51,17 @@ namespace SpaceDefence.GameObjects.Bullets
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Alien || other is Supply)
+            if ((other is LivingGameObject && other is not Ship) || other is Supply)
             {
+                var go = (LivingGameObject)other;
+                go.Die();
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             }
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), Color.Red);
+            spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox(), null, Color.White, _angle, new Vector2(_texture.Width / 2, _texture.Height / 2), SpriteEffects.None, 0);
             base.Draw(spriteBatch, gameTime);
         }
     }

@@ -31,7 +31,11 @@ namespace SpaceDefence.GameObjects.Powerups
         public override void OnCollision(GameObject other)
         {
             RandomMove();
-            GameManager.GetGameManager().Player.UpgradeWeapon(new LaserGun());
+            int rnd = GameManager.GetGameManager().RNG.Next(0, 2);
+            if (rnd == 0)
+                GameManager.GetGameManager().Player.UpgradeWeapon(new MissleGun());
+            else
+                GameManager.GetGameManager().Player.UpgradeWeapon(new LaserGun());
             base.OnCollision(other);
         }
 
