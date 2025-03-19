@@ -5,7 +5,7 @@ using SpaceDefence.Engine.Managers;
 
 namespace SpaceDefence.GameObjects.Bullets
 {
-    internal class Laser : GameObject
+    public class Laser : GameObject
     {
         private LinePieceCollider linePiece;
         private Texture2D sprite;

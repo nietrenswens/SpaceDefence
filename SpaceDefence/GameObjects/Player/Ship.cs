@@ -16,13 +16,11 @@ namespace SpaceDefence.GameObjects.Player
         private Weapon _weapon;
 
         private Texture2D _shipBody;
-        private Texture2D _laserTurret;
         private float _buffTimer = 0;
         private float _buffDuration = 15f; // in seconds
         private float _acceleration = 30f;
         private float _maxSpeed = 400f;
         private RectangleCollider _rectangleCollider;
-        private Point _target;
         private Vector2 _velocity;
 
         public float Width => _rectangleCollider.shape.Width;

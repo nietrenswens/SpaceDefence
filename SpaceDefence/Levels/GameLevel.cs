@@ -7,6 +7,8 @@ using SpaceDefence.Engine.States.Levels;
 using SpaceDefence.GameObjects.Enemies;
 using SpaceDefence.GameObjects.GUI.PauseMenu;
 using SpaceDefence.GameObjects.Powerups;
+using SpaceDefence.GUIObjects;
+using SpaceDefence.GUIObjects.GameGUI;
 using System;
 namespace SpaceDefence.Levels
 {
@@ -16,16 +18,20 @@ namespace SpaceDefence.Levels
         private PauseMenu _pauseMenu;
         private EnemyManager _enemyManager;
 
+        private ObjectManager<GUIObject> _guiObjectManager;
+
 
         public GameLevel()
         {
             _state = GameState.Playing;
             _pauseMenu = new PauseMenu();
             _enemyManager = new EnemyManager();
+            _guiObjectManager = new();
         }
 
         public override void Load(ContentManager content)
         {
+            _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
             AddGameObject(new Supply());
 
@@ -51,7 +57,11 @@ namespace SpaceDefence.Levels
             spriteBatch.Begin();
             if (_state == GameState.Paused)
                 _pauseMenu.Draw(spriteBatch, gameTime);
-            spriteBatch.End();
+            else if (_state == GameState.Playing)
+            {
+                _guiObjectManager.Draw(spriteBatch, gameTime);
+            }
+                spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -59,6 +69,7 @@ namespace SpaceDefence.Levels
             if (_state == GameState.Playing)
             {
                 _enemyManager.Update(gameTime);
+                _guiObjectManager.Update(gameTime);
                 base.Update(gameTime);
             } 
             else if (_state == GameState.Paused)
