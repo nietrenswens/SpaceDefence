@@ -109,15 +109,18 @@ namespace SpaceDefence.GameObjects.Enemies
             }
 
             if (Health <= 0)
-                Die();
+                Die(projectile);
         }
 
-        public override void Die()
+        public override void Die(GameObject killer = null)
         {
             LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
 
-            var gameManager = GameManager.GetGameManager();
-            gameManager.GameStats.AddKill();
+            if (killer != null && killer.CollisionGroup == CollisionGroup.Bullet)
+            {
+                var gameManager = GameManager.GetGameManager();
+                gameManager.GameStats.AddKill();
+            }
 
             LevelManager.GetLevelManager().CurrentLevel.AddAnimation(new ExplosionAnimation(_circleCollider.Center.ToPoint()));
         }

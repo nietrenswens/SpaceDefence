@@ -188,6 +188,13 @@
 /processorParam:TextureFormat=Color
 /build:missle.png
 
+#begin scorefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:scorefont.spritefont
+
 #begin ship_body.png
 /importer:TextureImporter
 /processor:TextureProcessor

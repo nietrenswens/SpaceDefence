@@ -36,7 +36,7 @@ namespace SpaceDefence.Engine
                 Destroy();
         }
 
-        public virtual void Die() { }
+        public virtual void Die(GameObject? killer = null) { }
 
         private float GetCenterX()
         {

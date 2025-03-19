@@ -55,7 +55,7 @@ namespace SpaceDefence.GameObjects.Bullets
             if (other is LivingGameObject && other is not Ship)
             {
                 var go = (LivingGameObject)other;
-                go.Die();
+                go.Die(this);
                 var radiusCircleCollider = new CircleCollider(_circleCollider.GetBoundingBox().Center.ToVector2(), 80);
                 CheckCollisionWithOtherEnemies(radiusCircleCollider);
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
@@ -78,7 +78,7 @@ namespace SpaceDefence.GameObjects.Bullets
             {
                 if (enemy.CheckCollision(radiusCircleCollider))
                 {
-                    enemy.Die();
+                    enemy.Die(this);
                 }
             }
         }

@@ -134,7 +134,7 @@ namespace SpaceDefence.GameObjects.Player
             _weapon.Load(GameManager.GetGameManager().ContentManager);
         }
 
-        public override void Die()
+        public override void Die(GameObject killer = null)
         {
             var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
             gameLevel.RemoveGameObject(this);
