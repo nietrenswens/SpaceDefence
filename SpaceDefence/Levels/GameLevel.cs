@@ -4,12 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.Engine.States.Levels;
-using SpaceDefence.GameObjects.Enemies;
 using SpaceDefence.GameObjects.GUI.PauseMenu;
+using SpaceDefence.GameObjects.Planets;
 using SpaceDefence.GameObjects.Powerups;
 using SpaceDefence.GUIObjects;
 using SpaceDefence.GUIObjects.GameGUI;
-using System;
 namespace SpaceDefence.Levels
 {
     public class GameLevel : Level
@@ -33,6 +32,7 @@ namespace SpaceDefence.Levels
         {
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
+            AddGameObject(new AlienPlanet());
             AddGameObject(new Supply());
 
             _enemyManager.SpawnEnemies();
@@ -43,9 +43,9 @@ namespace SpaceDefence.Levels
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            
+
             spriteBatch.Begin(transformMatrix: GetWorldTransformationMatrix());
-            foreach(var gameObject in _gameObjectManager.Objects)
+            foreach (var gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Draw(spriteBatch, gameTime);
             }
@@ -61,7 +61,7 @@ namespace SpaceDefence.Levels
             {
                 _guiObjectManager.Draw(spriteBatch, gameTime);
             }
-                spriteBatch.End();
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -71,7 +71,7 @@ namespace SpaceDefence.Levels
                 _enemyManager.Update(gameTime);
                 _guiObjectManager.Update(gameTime);
                 base.Update(gameTime);
-            } 
+            }
             else if (_state == GameState.Paused)
             {
                 InputManager.GetInputManager().Update();

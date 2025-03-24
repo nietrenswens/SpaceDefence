@@ -1,13 +1,12 @@
-﻿using SpaceDefence.Collision;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceDefence.Engine.Managers;
-using SpaceDefence.GameObjects.Bullets;
-using SpaceDefence.Levels;
-using SpaceDefence.Engine;
 using SpaceDefence.Animations;
+using SpaceDefence.Collision;
+using SpaceDefence.Engine;
+using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Player.Weapons;
+using SpaceDefence.Levels;
 
 namespace SpaceDefence.GameObjects.Player
 {
@@ -27,6 +26,8 @@ namespace SpaceDefence.GameObjects.Player
         public float Height => _rectangleCollider.shape.Height;
         public Point Center => _rectangleCollider.shape.Center;
 
+        public bool IsCarryingDelivery { get; set; }
+
         /// <summary>
         /// The player character
         /// </summary>
@@ -40,6 +41,7 @@ namespace SpaceDefence.GameObjects.Player
             MaxHealth = 100;
             Health = MaxHealth;
             ShowHealthBar = true;
+            IsCarryingDelivery = false;
             _weapon = new DefaultGun();
         }
 
