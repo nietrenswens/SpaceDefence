@@ -7,6 +7,7 @@ using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Player.Weapons;
 using SpaceDefence.Levels;
+using System;
 
 namespace SpaceDefence.GameObjects.Player
 {
@@ -27,6 +28,7 @@ namespace SpaceDefence.GameObjects.Player
         public Point Center => _rectangleCollider.shape.Center;
 
         public bool IsCarryingDelivery { get; set; }
+        public Guid? LastVisitedPlanetID { get; set; }
 
         /// <summary>
         /// The player character

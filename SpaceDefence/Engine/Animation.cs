@@ -9,6 +9,9 @@ namespace SpaceDefence.Engine
         public bool IsFinished { get; set; }
         public Point Position { get; set; }
 
+        public int Width => _frameWidth;
+        public int Height => _frameHeight;
+
         private int _frameDuration;
         private int _currentFrameIndex;
         private int _frameWidth;
@@ -56,7 +59,7 @@ namespace SpaceDefence.Engine
             if (_texture == null) throw new IncorrectAnimationFrameException("Texture is null");
 
             Rectangle sourceRect = new Rectangle(_currentFrameIndex * _frameWidth, 0, _frameWidth, _frameHeight);
-            Rectangle rect = new Rectangle(Position.X - _offsetLeft, Position.Y, _frameWidth, _frameHeight);
+            Rectangle rect = new Rectangle(Position.X, Position.Y, _frameWidth, _frameHeight);
             spriteBatch.Draw(_texture, rect, sourceRect, Color.White);
         }
     }

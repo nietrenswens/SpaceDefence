@@ -33,6 +33,7 @@ namespace SpaceDefence.GUIObjects.GameGUI
         {
             spriteBatch.Draw(_texture, new Rectangle(_location.X, _location.Y, (int)(_width * _backgroundScale), (int)(_height * _backgroundScale)), new Rectangle(_location.X, _location.Y, (int)_width, (int)_height), Color.White);
             spriteBatch.DrawString(_font, _gameStats.Kills.ToString(), new Vector2(_location.X + _width - 110, _location.Y + 45), Color.White);
+            spriteBatch.DrawString(_font, _gameStats.Score.ToString(), new Vector2(_location.X + _width - 110, _location.Y + 90), Color.White);
         }
     }
 }

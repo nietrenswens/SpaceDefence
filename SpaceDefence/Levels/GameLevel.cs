@@ -32,7 +32,8 @@ namespace SpaceDefence.Levels
         {
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
-            AddGameObject(new AlienPlanet());
+            AddGameObject(new Planet("alien_planet", false));
+            AddGameObject(new Planet("earth_planet", true));
             AddGameObject(new Supply());
 
             _enemyManager.SpawnEnemies();
@@ -71,8 +72,7 @@ namespace SpaceDefence.Levels
                 _enemyManager.Update(gameTime);
                 _guiObjectManager.Update(gameTime);
                 base.Update(gameTime);
-            }
-            else if (_state == GameState.Paused)
+            } else if (_state == GameState.Paused)
             {
                 InputManager.GetInputManager().Update();
                 HandleInput();
