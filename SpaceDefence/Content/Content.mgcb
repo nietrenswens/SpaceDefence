@@ -128,6 +128,18 @@
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont;font.spritefont
 
+#begin gui/objectives/objective_icon.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gui/objectives/objective_icon.png
+
 #begin gui/quit_game.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -211,6 +223,20 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:missle.png
+
+#begin objective_fonts/subtitle.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:objective_fonts/subtitle.spritefont
+
+#begin objective_fonts/title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:objective_fonts/title.spritefont
 
 #begin scorefont.spritefont
 /importer:FontDescriptionImporter

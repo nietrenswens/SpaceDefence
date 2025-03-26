@@ -5,6 +5,8 @@ using SpaceDefence.Animations;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Player;
+using SpaceDefence.Levels;
+using SpaceDefence.Objectives;
 
 namespace SpaceDefence.GameObjects.Planets
 {
@@ -37,14 +39,21 @@ namespace SpaceDefence.GameObjects.Planets
 
         public override void OnCollision(GameObject other)
         {
+            var level = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
             if (other is Ship player)
             {
                 if (player.IsCarryingDelivery && IsReceiver)
                 {
+                    if (level.CurrentObjective is not DeliverToAlienPlanetObjective)
+                        return;
+                    level.CurrentObjective.OnComplete();
                     player.IsCarryingDelivery = false;
                     GameManager.GetGameManager().GameStats.AddScore();
                 } else if (!IsReceiver)
                 {
+                    if (level.CurrentObjective is not PickUpFromEarth)
+                        return;
+                    level.CurrentObjective.OnComplete();
                     player.IsCarryingDelivery = true;
                 }
             }

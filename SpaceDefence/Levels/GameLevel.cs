@@ -9,6 +9,7 @@ using SpaceDefence.GameObjects.Planets;
 using SpaceDefence.GameObjects.Powerups;
 using SpaceDefence.GUIObjects;
 using SpaceDefence.GUIObjects.GameGUI;
+using SpaceDefence.Objectives;
 namespace SpaceDefence.Levels
 {
     public class GameLevel : Level
@@ -17,7 +18,9 @@ namespace SpaceDefence.Levels
         private PauseMenu _pauseMenu;
         private EnemyManager _enemyManager;
 
+
         private ObjectManager<GUIObject> _guiObjectManager;
+        public Objective CurrentObjective { get; private set; }
 
 
         public GameLevel()
@@ -30,10 +33,11 @@ namespace SpaceDefence.Levels
 
         public override void Load(ContentManager content)
         {
+            SetObjective(new PickUpFromEarth());
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
-            AddGameObject(new Planet("alien_planet", false));
-            AddGameObject(new Planet("earth_planet", true));
+            AddGameObject(new Planet("alien_planet", true));
+            AddGameObject(new Planet("earth_planet", false));
             AddGameObject(new Supply());
 
             _enemyManager.SpawnEnemies();
@@ -55,7 +59,7 @@ namespace SpaceDefence.Levels
                 animation.Draw(spriteBatch, gameTime);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             if (_state == GameState.Paused)
                 _pauseMenu.Draw(spriteBatch, gameTime);
             else if (_state == GameState.Playing)
@@ -110,6 +114,15 @@ namespace SpaceDefence.Levels
                 _state = GameState.Playing;
             else
                 _state = GameState.Paused;
+        }
+
+        public void SetObjective(Objective objective)
+        {
+            var currentGuiObjective = _guiObjectManager.Objects.Find(obj => obj is GUIObjective);
+            _guiObjectManager.RemoveObject(currentGuiObjective);
+            var newGuiObjective = new GUIObjective(objective);
+            _guiObjectManager.AddObject(new GUIObjective(objective));
+            CurrentObjective = objective;
         }
     }
 }
