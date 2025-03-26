@@ -5,7 +5,7 @@ namespace SpaceDefence.Objectives
 {
     public class PickUpFromEarth : Objective
     {
-        public PickUpFromEarth() : base("Pickup from earth", "Pick up the goods from the earh planet", "objective_icon")
+        public PickUpFromEarth() : base("Pickup from earth", "Pick up the goods from the earh planet", "deliver_to_earth")
         {
         }
 
