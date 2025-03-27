@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
 using SpaceDefence.Collision;
-using Microsoft.Xna.Framework;
+using System;
 
 namespace SpaceDefence
 {
@@ -8,15 +8,17 @@ namespace SpaceDefence
     {
         public float X;
         public float Y;
-        public Vector2 Center 
-        { 
-            get { 
-                return new Vector2(X, Y); 
-            } 
+        public Vector2 Center
+        {
+            get
+            {
+                return new Vector2(X, Y);
+            }
 
-            set { 
-                X = value.X; Y = value.Y; 
-            } 
+            set
+            {
+                X = value.X; Y = value.Y;
+            }
         }
         public float Radius;
 
@@ -28,8 +30,8 @@ namespace SpaceDefence
         /// <param name="radius">The radius of the circle</param>
         public CircleCollider(float x, float y, float radius)
         {
-            this.X = x; 
-            this.Y = y; 
+            this.X = x;
+            this.Y = y;
             this.Radius = radius;
         }
 
@@ -52,7 +54,7 @@ namespace SpaceDefence
         /// <returns>true if the coordinates are within the circle.</returns>
         public override bool Contains(Vector2 coordinates)
         {
-            return (Center-coordinates).Length() < Radius;
+            return (Center - coordinates).Length() < Radius;
         }
 
         /// <summary>
@@ -72,10 +74,11 @@ namespace SpaceDefence
         /// </summary>
         /// <param name="other">The Rectangle to check for intersection.</param>
         /// <returns>true there is any overlap between the Circle and the Rectangle.</returns>
+        /// <credits>Credits naar Sammie voor het samen uitdenken van deze collider.</credits>
         public override bool Intersects(RectangleCollider other)
         {
             var rectCenterCompensation = other.shape.Center.ToVector2();
-            
+
             // Calculate how much we should move to get the rectangle center to (0,0)
             var compensatedBottomRight = new Vector2(other.shape.Right, other.shape.Bottom) - rectCenterCompensation;
             // Calculate how much we should move to get the circle center to its correct position when the rectangle center is at (0,0)
@@ -86,7 +89,7 @@ namespace SpaceDefence
 
             if (absCompensatedCircleCenter.X < compensatedBottomRight.X)
             {
-                    return absCompensatedCircleCenter.Y - compensatedBottomRight.Y < Radius;
+                return absCompensatedCircleCenter.Y - compensatedBottomRight.Y < Radius;
             }
             else if (absCompensatedCircleCenter.Y < compensatedBottomRight.Y)
             {
@@ -97,7 +100,7 @@ namespace SpaceDefence
                 return (compensatedBottomRight - compensatedCircleCenter).Length() < Radius;
             }
         }
-        
+
         /// <summary>
         /// Gets whether or not the Circle intersects the Line
         /// </summary>

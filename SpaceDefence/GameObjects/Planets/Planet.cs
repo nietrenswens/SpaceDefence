@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Animations;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
-using SpaceDefence.GameObjects.Player;
-using SpaceDefence.Levels;
-using SpaceDefence.Objectives;
 
 namespace SpaceDefence.GameObjects.Planets
 {
@@ -14,19 +11,19 @@ namespace SpaceDefence.GameObjects.Planets
     {
         protected Animation _animation;
         public Point Position { get; set; }
-        public bool IsReceiver { get; set; }
 
         public Planet(string spriteSheetName, bool isReceiver, Point? position = null)
         {
             if (position == null)
             {
                 Position = new Point(GameManager.GetGameManager().RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX), GameManager.GetGameManager().RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX));
-            } else
+            }
+            else
             {
                 Position = (Point)position;
             }
             _animation = new PlanetAnimation(Position, spriteSheetName);
-            IsReceiver = isReceiver;
+            CollisionGroup = isReceiver ? Collision.CollisionGroup.DeliverPlanet : Collision.CollisionGroup.PickupPlanet;
         }
 
         public override void Load(ContentManager content)
@@ -35,28 +32,6 @@ namespace SpaceDefence.GameObjects.Planets
             var height = _animation.Height;
             SetCollider(new CircleCollider(Position.X + width / 2, Position.Y + height / 2, width / 2));
             base.Load(content);
-        }
-
-        public override void OnCollision(GameObject other)
-        {
-            var level = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
-            if (other is Ship player)
-            {
-                if (player.IsCarryingDelivery && IsReceiver)
-                {
-                    if (level.CurrentObjective is not DeliverToAlienPlanetObjective)
-                        return;
-                    level.CurrentObjective.OnComplete();
-                    player.IsCarryingDelivery = false;
-                    GameManager.GetGameManager().GameStats.AddScore();
-                } else if (!IsReceiver)
-                {
-                    if (level.CurrentObjective is not PickUpFromEarth)
-                        return;
-                    level.CurrentObjective.OnComplete();
-                    player.IsCarryingDelivery = true;
-                }
-            }
         }
 
         public override void Update(GameTime gameTime)

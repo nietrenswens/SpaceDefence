@@ -30,6 +30,10 @@ namespace SpaceDefence.GameObjects.Player
         public bool IsCarryingDelivery { get; set; }
         public Guid? LastVisitedPlanetID { get; set; }
 
+        public event EventHandler PickupDeliveryEvent;
+        public event EventHandler DropoffDeliveryEvent;
+        public event EventHandler KillEvent;
+
         /// <summary>
         /// The player character
         /// </summary>
@@ -85,6 +89,25 @@ namespace SpaceDefence.GameObjects.Player
                 _velocity *= _maxSpeed;
             }
             base.HandleInput();
+        }
+
+        public override void OnCollision(GameObject other)
+        {
+            switch (other.CollisionGroup)
+            {
+                case CollisionGroup.PickupPlanet:
+                    if (IsCarryingDelivery)
+                        return;
+                    IsCarryingDelivery = true;
+                    PickupDeliveryEvent?.Invoke(this, EventArgs.Empty);
+                    break;
+                case CollisionGroup.DeliverPlanet:
+                    if (!IsCarryingDelivery)
+                        return;
+                    IsCarryingDelivery = false;
+                    DropoffDeliveryEvent?.Invoke(this, EventArgs.Empty);
+                    break;
+            }
         }
 
         public override void Update(GameTime gameTime)
