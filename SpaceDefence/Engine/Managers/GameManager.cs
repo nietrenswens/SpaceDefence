@@ -2,7 +2,10 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.GameObjects.Player;
+using SpaceDefence.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SpaceDefence.Engine.Managers
 {
@@ -16,6 +19,8 @@ namespace SpaceDefence.Engine.Managers
         public Game Game { get; private set; }
         public ContentManager ContentManager { get; private set; }
         public GraphicsDevice GraphicsDevice { get; private set; }
+
+        public List<Timer> Timers { get; private set; }
 
         public static GameManager GetGameManager()
         {
@@ -35,6 +40,12 @@ namespace SpaceDefence.Engine.Managers
             ContentManager = content;
             Player = player;
             GameStats = new GameStats();
+            Timers = new List<Timer>();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            UpdateTimers(gameTime);
         }
 
 
@@ -51,6 +62,14 @@ namespace SpaceDefence.Engine.Managers
         public void Exit()
         {
             Game.Exit();
+        }
+
+        private void UpdateTimers(GameTime gameTime)
+        {
+            foreach (Timer timer in Timers)
+                timer.Update(gameTime);
+
+            Timers = Timers.Where(timer => !timer.IsFinished).ToList();
         }
 
     }

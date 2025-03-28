@@ -60,6 +60,7 @@ namespace SpaceDefence
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            GameManager.GetGameManager().Update(gameTime);
             LevelManager.GetLevelManager().CurrentLevel.Update(gameTime);
             base.Update(gameTime);
         }

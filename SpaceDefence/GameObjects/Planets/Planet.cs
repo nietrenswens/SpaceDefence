@@ -36,6 +36,20 @@ namespace SpaceDefence.GameObjects.Planets
 
         public override void Update(GameTime gameTime)
         {
+            Point randomPos;
+            while (Position == Point.Zero)
+            {
+                randomPos = new Point(GameManager.GetGameManager().RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX), GameManager.GetGameManager().RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX));
+                var planets = LevelManager.GetLevelManager().CurrentLevel.GameObjects.FindAll(x => x is Planet);
+                foreach (var planet in planets)
+                {
+                    if (Vector2.Distance(new Vector2(randomPos.X, randomPos.Y), new Vector2(planet.Center.X, planet.Center.Y)) < 1200)
+                    {
+                        break;
+                    }
+                }
+                Position = randomPos;
+            }
             _animation.Update(gameTime);
             base.Update(gameTime);
         }

@@ -24,6 +24,7 @@ namespace SpaceDefence.GameObjects.Player
         private Vector2 _velocity;
 
         public bool IsCarryingDelivery { get; set; }
+        public bool IsDead { get; private set; }
         public Guid? LastVisitedPlanetID { get; set; }
 
         public event EventHandler PickupDeliveryEvent;
@@ -45,6 +46,7 @@ namespace SpaceDefence.GameObjects.Player
             ShowHealthBar = true;
             IsCarryingDelivery = false;
             _weapon = new DefaultGun();
+            IsDead = false;
         }
 
         public override void Load(ContentManager content)
@@ -59,6 +61,8 @@ namespace SpaceDefence.GameObjects.Player
 
         public override void HandleInput()
         {
+            if (IsDead)
+                return;
             _weapon.HandleInput();
             var inputManager = InputManager.GetInputManager();
 
@@ -89,6 +93,8 @@ namespace SpaceDefence.GameObjects.Player
 
         public override void OnCollision(GameObject other)
         {
+            if (IsDead)
+                return;
             switch (other.CollisionGroup)
             {
                 case CollisionGroup.PickupPlanet:
@@ -108,6 +114,8 @@ namespace SpaceDefence.GameObjects.Player
 
         public override void Update(GameTime gameTime)
         {
+            if (IsDead)
+                return;
             // Update the Buff timer
             _weapon.Update(gameTime);
             if (_buffTimer > 0)
@@ -127,6 +135,8 @@ namespace SpaceDefence.GameObjects.Player
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            if (IsDead)
+                return;
             var direction = LinePieceCollider.GetAngle(_velocity);
             Rectangle shipLocation = _rectangleCollider.shape;
             shipLocation.Location = _rectangleCollider.shape.Center;
@@ -159,11 +169,13 @@ namespace SpaceDefence.GameObjects.Player
 
         public override void Die(GameObject killer = null)
         {
+            if (IsDead)
+                return;
             var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
-            gameLevel.RemoveGameObject(this);
+            IsDead = true;
             gameLevel.AddAnimation(new ExplosionAnimation(_rectangleCollider.shape.Center));
 
-            LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel());
+            GameManager.GetGameManager().Timers.Add(new Utilities.Timer(1200, () => LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel())));
         }
 
 

@@ -39,6 +39,8 @@ namespace SpaceDefence.Levels
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
             AddGameObject(new Planet("alien_planet", true));
+            AddGameObject(new Planet("alien_planet", true));
+            AddGameObject(new Planet("earth_planet", false));
             AddGameObject(new Planet("earth_planet", false));
             AddGameObject(new Supply());
 
