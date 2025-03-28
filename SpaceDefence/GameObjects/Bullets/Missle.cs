@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Enemies;
+using SpaceDefence.GameObjects.Player;
 using SpaceDefence.GameObjects.Powerups;
 using System;
-using SpaceDefence.Engine;
-using SpaceDefence.GameObjects.Player;
 using System.Linq;
 
 namespace SpaceDefence.GameObjects.Bullets
@@ -42,7 +42,7 @@ namespace SpaceDefence.GameObjects.Bullets
             base.Update(gameTime);
             _circleCollider.Center += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             var player = GameManager.GetGameManager().Player;
-            var bulletToPlayer = player.GetPosition().Center.ToVector2() - _circleCollider.Center;
+            var bulletToPlayer = player.Center.ToVector2() - _circleCollider.Center;
             if (Math.Abs(bulletToPlayer.Length()) > 1000f)
             {
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
@@ -59,7 +59,8 @@ namespace SpaceDefence.GameObjects.Bullets
                 var radiusCircleCollider = new CircleCollider(_circleCollider.GetBoundingBox().Center.ToVector2(), 80);
                 CheckCollisionWithOtherEnemies(radiusCircleCollider);
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
-            } else if (other is Supply)
+            }
+            else if (other is Supply)
             {
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);
             }

@@ -1,11 +1,11 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceDefence.Collision;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Enemies;
 using SpaceDefence.GameObjects.Powerups;
+using System;
 
 namespace SpaceDefence.GameObjects.Bullets
 {
@@ -35,7 +35,7 @@ namespace SpaceDefence.GameObjects.Bullets
             base.Update(gameTime);
             _circleCollider.Center += _velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
             var player = GameManager.GetGameManager().Player;
-            var bulletToPlayer = player.GetPosition().Center.ToVector2() - _circleCollider.Center;
+            var bulletToPlayer = player.Center.ToVector2() - _circleCollider.Center;
             if (Math.Abs(bulletToPlayer.Length()) > 1000f)
             {
                 LevelManager.GetLevelManager().CurrentLevel.RemoveGameObject(this);

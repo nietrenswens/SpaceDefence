@@ -63,7 +63,7 @@ namespace SpaceDefence.GameObjects.Enemies
             GameManager gm = GameManager.GetGameManager();
             _circleCollider.Center = gm.RandomScreenLocation();
 
-            Vector2 centerOfPlayer = gm.Player.GetPosition().Center.ToVector2();
+            Vector2 centerOfPlayer = gm.Player.Center.ToVector2();
             while ((_circleCollider.Center - centerOfPlayer).Length() < PlayerClearance)
                 _circleCollider.Center = gm.RandomScreenLocation();
         }
@@ -88,7 +88,7 @@ namespace SpaceDefence.GameObjects.Enemies
 
         private void Move(GameTime gameTime)
         {
-            var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
+            var playerLocation = GameManager.GetGameManager().Player.Center.ToVector2();
 
             var direction = playerLocation - _circleCollider.Center;
             direction.Normalize();

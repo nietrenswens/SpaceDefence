@@ -4,10 +4,10 @@ using System;
 
 namespace SpaceDefence.Objectives
 {
-    public class PickUpFromEarth : Objective
+    public class PickUpFromEarthObjective : Objective
     {
         private GameLevel _level => LevelManager.GetLevelManager().CurrentLevel as GameLevel;
-        public PickUpFromEarth() : base("Pickup from earth", "Pick up the goods from the earh planet", "deliver_to_earth")
+        public PickUpFromEarthObjective() : base("Pickup from earth", "Pick up the goods from the earh planet", "deliver_to_earth")
         {
             var player = GameManager.GetGameManager().Player;
             player.PickupDeliveryEvent += OnPickup;

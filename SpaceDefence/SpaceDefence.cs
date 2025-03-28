@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Player;
 namespace SpaceDefence
@@ -15,6 +16,8 @@ namespace SpaceDefence
         public static int MINY = 0;
         public static int MAXY = 4000;
 
+        public static GameMode GameMode = GameMode.Prod;
+
         private SpriteBatch _spriteBatch;
         public GraphicsDeviceManager _graphics;
         private GameManager _gameManager;
@@ -27,7 +30,7 @@ namespace SpaceDefence
             // Set the size of the screen
             _graphics.PreferredBackBufferWidth = SCREENWIDTH;
             _graphics.PreferredBackBufferHeight = SCREENHEIGHT;
-            
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }

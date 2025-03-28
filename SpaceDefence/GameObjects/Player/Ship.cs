@@ -23,10 +23,6 @@ namespace SpaceDefence.GameObjects.Player
         private RectangleCollider _rectangleCollider;
         private Vector2 _velocity;
 
-        public float Width => _rectangleCollider.shape.Width;
-        public float Height => _rectangleCollider.shape.Height;
-        public Point Center => _rectangleCollider.shape.Center;
-
         public bool IsCarryingDelivery { get; set; }
         public Guid? LastVisitedPlanetID { get; set; }
 
@@ -174,11 +170,6 @@ namespace SpaceDefence.GameObjects.Player
         public void Buff()
         {
             _buffTimer = _buffDuration;
-        }
-
-        public Rectangle GetPosition()
-        {
-            return _rectangleCollider.shape;
         }
 
         private void move(Vector2 velocity, GameTime gameTime)

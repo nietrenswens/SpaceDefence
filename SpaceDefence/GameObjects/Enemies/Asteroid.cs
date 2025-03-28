@@ -11,14 +11,18 @@ namespace SpaceDefence.GameObjects.Enemies
     {
         private CircleCollider _circleCollider;
         private Texture2D _texture;
-        public Asteroid()
+
+        private float _scale;
+
+        public Asteroid(float scale = 1f)
         {
+            _scale = scale;
         }
 
         public override void Load(ContentManager content)
         {
             _texture = content.Load<Texture2D>("asteroid");
-            _circleCollider = new CircleCollider(Vector2.Zero, 16);
+            _circleCollider = new CircleCollider(Vector2.Zero, 24 * _scale);
             SetCollider(_circleCollider);
             Spawn();
             base.Load(content);
@@ -26,18 +30,22 @@ namespace SpaceDefence.GameObjects.Enemies
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(_texture, _circleCollider.GetBoundingBox().Location.ToVector2() - new Vector2(32, 32), Color.White);
             base.Draw(spriteBatch, gameTime);
+            var sourceRect = new Rectangle(0, 0, 64, 64);
+            int width = (int)(_texture.Width * _scale);
+            int height = (int)(_texture.Height * _scale);
+            var destRect = new Rectangle((int)_circleCollider.GetBoundingBox().Location.X - (width / 2), (int)_circleCollider.GetBoundingBox().Location.Y - (height / 2), width, height);
+            spriteBatch.Draw(_texture, destRect, sourceRect, Color.White);
         }
 
         private void Spawn()
         {
             var player = GameManager.GetGameManager().Player;
-            var playerPos = player.GetPosition();
+            var center = player.Center;
             var rng = GameManager.GetGameManager().RNG;
 
             _circleCollider.Center = new Vector2(rng.Next(SpaceDefence.MINX, SpaceDefence.MAXX), rng.Next(SpaceDefence.MINY, SpaceDefence.MAXY));
-            while (Vector2.Distance(playerPos.Center.ToVector2(), _circleCollider.Center) < 300)
+            while (Vector2.Distance(center.ToVector2(), _circleCollider.Center) < 300)
             {
                 _circleCollider.Center = new Vector2(rng.Next(SpaceDefence.MINX, SpaceDefence.MAXX), rng.Next(SpaceDefence.MINY, SpaceDefence.MAXY));
             }
@@ -50,7 +58,8 @@ namespace SpaceDefence.GameObjects.Enemies
                 var player = other as Ship;
                 player.Die();
                 return;
-            } else if (other.CollisionGroup == Collision.CollisionGroup.Enemy)
+            }
+            else if (other.CollisionGroup == Collision.CollisionGroup.Enemy)
             {
                 var gameObj = other as LivingGameObject;
                 gameObj.Die();

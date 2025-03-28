@@ -12,7 +12,7 @@ namespace SpaceDefence.Engine.Managers
         {
             var level = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
 
-            Spawn<Asteroid>(8);
+            SpawnRandomSizedAsteroid(8);
             Spawn<Alien>(1);
         }
 
@@ -35,6 +35,17 @@ namespace SpaceDefence.Engine.Managers
             for (int i = 0; i < amount; i++)
             {
                 level.AddGameObject(new T());
+            }
+        }
+
+        private void SpawnRandomSizedAsteroid(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                var level = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
+                var rng = GameManager.GetGameManager().RNG;
+                var scale = rng.Next(1, 4) / 1f;
+                level.AddGameObject(new Asteroid(scale));
             }
         }
     }

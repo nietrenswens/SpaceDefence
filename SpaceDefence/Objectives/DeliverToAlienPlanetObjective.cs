@@ -23,7 +23,7 @@ namespace SpaceDefence.Objectives
 
         public override void OnComplete()
         {
-            (LevelManager.GetLevelManager().CurrentLevel as GameLevel).SetObjective(new PickUpFromEarth());
+            (LevelManager.GetLevelManager().CurrentLevel as GameLevel).SetObjective(new PickUpFromEarthObjective());
         }
 
 

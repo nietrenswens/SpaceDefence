@@ -40,7 +40,7 @@ namespace SpaceDefence.GameObjects.Bullets
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var playerLocation = GameManager.GetGameManager().Player.GetPosition().Center.ToVector2();
+            var playerLocation = GameManager.GetGameManager().Player.Center.ToVector2();
             Rectangle target = new Rectangle((int)linePiece.Start.X, (int)linePiece.Start.Y, 8, (int)linePiece.Length);
             float angle = linePiece.GetAngle();
             spriteBatch.Draw(sprite, target, null, Color.White, angle, new Vector2(sprite.Width / 2, sprite.Height), SpriteEffects.None, 0);

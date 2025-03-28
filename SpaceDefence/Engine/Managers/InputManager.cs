@@ -30,7 +30,7 @@ namespace SpaceDefence.Engine.Managers
             CurrentMouseState = Mouse.GetState();
             LastMouseState = Mouse.GetState();
         }
-        
+
         /// <summary>
         /// Updates the current and previous keyboard and mouse states
         /// </summary>
@@ -70,7 +70,7 @@ namespace SpaceDefence.Engine.Managers
         /// </summary>
         /// <param name="key">The key for which you wish to know the _state</param>
         /// <returns>true if the key is currently down and was up in the previous step, otherwise false</returns>
-        public bool IsKeyPress(Keys key) 
+        public bool IsKeyPress(Keys key)
         {
             return CurrentKeyboardState.IsKeyDown(key) && LastKeyboardState.IsKeyUp(key);
         }
@@ -103,7 +103,7 @@ namespace SpaceDefence.Engine.Managers
 
             var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
 
-            Matrix inverseTransform = Matrix.Invert(gameLevel.GetWorldTransformationMatrix());
+            Matrix inverseTransform = Matrix.Invert(gameLevel.Camera.GetWorldTransformationMatrix());
             return Vector2.Transform(screenMousePosition, inverseTransform);
         }
     }

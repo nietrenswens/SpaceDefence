@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Bullets;
 
@@ -10,7 +10,7 @@ namespace SpaceDefence.GameObjects.Player.Weapons
     public class MissleGun : Weapon
     {
         private Point _target;
-        private float _aimAngle => LinePieceCollider.GetAngle(LinePieceCollider.GetDirection(GameManager.GetGameManager().Player.GetPosition().Center, _target));
+        private float _aimAngle => LinePieceCollider.GetAngle(LinePieceCollider.GetDirection(GameManager.GetGameManager().Player.Center, _target));
         private Ship _player => GameManager.GetGameManager().Player;
         public override void Load(ContentManager content)
         {
@@ -23,7 +23,7 @@ namespace SpaceDefence.GameObjects.Player.Weapons
             _target = inputManager.GetRelativeMousePosition().ToPoint();
             if (inputManager.LeftMousePress())
             {
-                Vector2 aimDirection = LinePieceCollider.GetDirection(_player.GetPosition().Center, _target);
+                Vector2 aimDirection = LinePieceCollider.GetDirection(_player.Center, _target);
                 Vector2 turretExit = _player.Center.ToVector2() + aimDirection * _texture.Height / 2f;
                 //LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Missle(turretExit, aimDirection, 150));
                 LevelManager.GetLevelManager().CurrentLevel.AddGameObject(new Missle(turretExit, aimDirection, 150));

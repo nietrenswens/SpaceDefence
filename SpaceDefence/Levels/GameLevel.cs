@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.Engine.States.Levels;
 using SpaceDefence.GameObjects.GUI.PauseMenu;
@@ -21,6 +22,7 @@ namespace SpaceDefence.Levels
 
         private ObjectManager<GUIObject> _guiObjectManager;
         public Objective CurrentObjective { get; private set; }
+        public GameObjectCenteredCamera Camera { get; private set; }
 
 
         public GameLevel()
@@ -33,12 +35,14 @@ namespace SpaceDefence.Levels
 
         public override void Load(ContentManager content)
         {
-            SetObjective(new PickUpFromEarth());
+            SetObjective(new PickUpFromEarthObjective());
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
             AddGameObject(new Planet("alien_planet", true));
             AddGameObject(new Planet("earth_planet", false));
             AddGameObject(new Supply());
+
+            Camera = new GameObjectCenteredCamera(GameManager.GetGameManager().Player, 1f);
 
             _enemyManager.SpawnEnemies();
 
@@ -49,7 +53,7 @@ namespace SpaceDefence.Levels
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
-            spriteBatch.Begin(transformMatrix: GetWorldTransformationMatrix());
+            spriteBatch.Begin(transformMatrix: Camera.GetWorldTransformationMatrix(), samplerState: SamplerState.PointClamp);
             foreach (var gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Draw(spriteBatch, gameTime);
@@ -76,7 +80,8 @@ namespace SpaceDefence.Levels
                 _enemyManager.Update(gameTime);
                 _guiObjectManager.Update(gameTime);
                 base.Update(gameTime);
-            } else if (_state == GameState.Paused)
+            }
+            else if (_state == GameState.Paused)
             {
                 InputManager.GetInputManager().Update();
                 HandleInput();
@@ -94,18 +99,6 @@ namespace SpaceDefence.Levels
                 base.HandleInput();
             else if (_state == GameState.Paused)
                 _pauseMenu.HandleInput();
-        }
-
-        public Matrix GetWorldTransformationMatrix()
-        {
-            var player = GameManager.GetGameManager().Player;
-            var screenWidth = SpaceDefence.SCREENWIDTH;
-            var screenHeight = SpaceDefence.SCREENHEIGHT;
-
-            float clampedX = MathHelper.Clamp(player.GetPosition().X, SpaceDefence.MINX + screenWidth / 2, SpaceDefence.MAXX + player.Width - screenWidth / 2);
-            float clampedY = MathHelper.Clamp(player.GetPosition().Y, SpaceDefence.MINY + screenHeight / 2, SpaceDefence.MAXY - screenHeight / 2);
-
-            return Matrix.CreateTranslation(-clampedX, -clampedY, 0) * Matrix.CreateScale(1f) * Matrix.CreateTranslation(screenWidth / 2, screenHeight / 2, 0);
         }
 
         public void TogglePause()

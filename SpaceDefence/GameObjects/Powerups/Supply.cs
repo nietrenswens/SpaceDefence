@@ -1,7 +1,7 @@
-﻿using SpaceDefence.Collision;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceDefence.Collision;
 using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.Player.Weapons;
 
@@ -13,9 +13,9 @@ namespace SpaceDefence.GameObjects.Powerups
         private Texture2D _texture;
         private float playerClearance = 100;
 
-        public Supply() 
+        public Supply()
         {
-            
+
         }
 
         public override void Load(ContentManager content)
@@ -42,9 +42,9 @@ namespace SpaceDefence.GameObjects.Powerups
         public void RandomMove()
         {
             GameManager gm = GameManager.GetGameManager();
-            _rectangleCollider.shape.Location = (gm.RandomScreenLocation() - _rectangleCollider.shape.Size.ToVector2()/2).ToPoint();
+            _rectangleCollider.shape.Location = (gm.RandomScreenLocation() - _rectangleCollider.shape.Size.ToVector2() / 2).ToPoint();
 
-            Vector2 centerOfPlayer = gm.Player.GetPosition().Center.ToVector2();
+            Vector2 centerOfPlayer = gm.Player.Center.ToVector2();
             while ((_rectangleCollider.shape.Center.ToVector2() - centerOfPlayer).Length() < playerClearance)
                 _rectangleCollider.shape.Location = gm.RandomScreenLocation().ToPoint();
         }
