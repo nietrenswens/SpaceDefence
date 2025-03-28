@@ -18,6 +18,7 @@ namespace SpaceDefence.Levels
         private GameState _state;
         private PauseMenu _pauseMenu;
         private EnemyManager _enemyManager;
+        private Texture2D _background;
 
 
         private ObjectManager<GUIObject> _guiObjectManager;
@@ -35,6 +36,7 @@ namespace SpaceDefence.Levels
 
         public override void Load(ContentManager content)
         {
+            _background = content.Load<Texture2D>("background");
             SetObjective(new PickUpFromEarthObjective());
             _guiObjectManager.AddObject(new ScoreboardGUI());
             AddGameObject(GameManager.GetGameManager().Player);
@@ -56,6 +58,7 @@ namespace SpaceDefence.Levels
         {
 
             spriteBatch.Begin(transformMatrix: Camera.GetWorldTransformationMatrix(), samplerState: SamplerState.PointClamp);
+            DrawBackground(spriteBatch);
             foreach (var gameObject in _gameObjectManager.Objects)
             {
                 gameObject.Draw(spriteBatch, gameTime);
@@ -118,6 +121,22 @@ namespace SpaceDefence.Levels
             var newGuiObjective = new GUIObjective(objective);
             _guiObjectManager.AddObject(new GUIObjective(objective));
             CurrentObjective = objective;
+        }
+
+        private void DrawBackground(SpriteBatch spriteBatch)
+        {
+            var width = _background.Width;
+            var height = _background.Height;
+            var levelWidth = SpaceDefence.MAXX - SpaceDefence.MINX;
+            var levelHeight = SpaceDefence.MAXY - SpaceDefence.MINY;
+
+            for (int i = 0; i < levelWidth / width + 1; i++)
+            {
+                for (int j = 0; j < levelHeight / height + 1; j++)
+                {
+                    spriteBatch.Draw(_background, new Vector2(SpaceDefence.MINX + i * width, SpaceDefence.MINY + j * height), Color.White);
+                }
+            }
         }
     }
 }
