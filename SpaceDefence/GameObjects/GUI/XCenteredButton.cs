@@ -4,7 +4,7 @@ using SpaceDefence.Collision;
 
 namespace SpaceDefence.GameObjects.GUI
 {
-    public class XCenteredButton : Button
+    public abstract class XCenteredButton : Button
     {
         private int _y;
 

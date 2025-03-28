@@ -1,10 +1,8 @@
 ﻿using Microsoft.Xna.Framework.Content;
+using SpaceDefence.Engine.Managers;
 using SpaceDefence.GameObjects.GFX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SpaceDefence.GameObjects.GUI;
+using SpaceDefence.GameObjects.GUI.StartMenu;
 
 namespace SpaceDefence.Levels
 {
@@ -12,8 +10,19 @@ namespace SpaceDefence.Levels
     {
         public override void Load(ContentManager content)
         {
+            var middleY = SpaceDefence.SCREENHEIGHT / 2;
+            var startButton = new StartButton(middleY + 80);
             AddGameObject(new CenteredTitle("Game Over"));
+            AddGameObject(startButton);
+
+            startButton.ButtonPressed += RestartGame;
             base.Load(content);
+        }
+
+        private void RestartGame(object o, ButtonEventArgs e)
+        {
+            GameManager.GetGameManager().ResetGame();
+            LevelManager.GetLevelManager().ChangeLevel(new GameLevel());
         }
     }
 }

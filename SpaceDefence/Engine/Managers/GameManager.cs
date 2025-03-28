@@ -33,14 +33,12 @@ namespace SpaceDefence.Engine.Managers
             RNG = new Random();
         }
 
-        public void Initialize(ContentManager content, GraphicsDevice graphicsDevice, Game game, Ship player)
+        public void Initialize(ContentManager content, GraphicsDevice graphicsDevice, Game game)
         {
             GraphicsDevice = graphicsDevice;
             Game = game;
             ContentManager = content;
-            Player = player;
-            GameStats = new GameStats();
-            Timers = new List<Timer>();
+            ResetGame();
         }
 
         public void Update(GameTime gameTime)
@@ -48,16 +46,14 @@ namespace SpaceDefence.Engine.Managers
             UpdateTimers(gameTime);
         }
 
-
-        /// <summary>
-        /// Get a random location on the screen.
-        /// </summary>
-        public Vector2 RandomScreenLocation()
+        public void ResetGame()
         {
-            return new Vector2(
-                RNG.Next(0, Game.GraphicsDevice.Viewport.Width),
-                RNG.Next(0, Game.GraphicsDevice.Viewport.Height));
+            Player = new Ship(new Point(1000, 1000));
+
+            GameStats = new GameStats();
+            Timers = new List<Timer>();
         }
+
 
         public void Exit()
         {

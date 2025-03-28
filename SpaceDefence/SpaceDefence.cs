@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceDefence.Engine;
 using SpaceDefence.Engine.Managers;
-using SpaceDefence.GameObjects.Player;
 namespace SpaceDefence
 {
+    // CHECK NORMALE SPACE DEFENCE VOOR DIE NAKIJK CRITERIA. HIER ZIJN SOMMIGE DINGEN ANDERS.
     public class SpaceDefence : Game
     {
         public static int SCREENWIDTH = 1920;
@@ -40,13 +40,8 @@ namespace SpaceDefence
             //Initialize the GameManager
             _gameManager = GameManager.GetGameManager();
 
-            // Place the player at the center of the screen
-            var spawnX = (MINX + MAXX) / 2;
-            var spawnY = (MINY + MAXY) / 2;
-            Ship player = new Ship(new Point(spawnX, spawnY));
-
             // Add the starting objects to the GameManager
-            _gameManager.Initialize(Content, GraphicsDevice, this, player);
+            _gameManager.Initialize(Content, GraphicsDevice, this);
             base.Initialize();
         }
 

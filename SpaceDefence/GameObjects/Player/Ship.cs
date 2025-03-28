@@ -29,7 +29,6 @@ namespace SpaceDefence.GameObjects.Player
 
         public event EventHandler PickupDeliveryEvent;
         public event EventHandler DropoffDeliveryEvent;
-        public event EventHandler KillEvent;
 
         /// <summary>
         /// The player character
@@ -173,7 +172,7 @@ namespace SpaceDefence.GameObjects.Player
                 return;
             var gameLevel = LevelManager.GetLevelManager().CurrentLevel as GameLevel;
             IsDead = true;
-            gameLevel.AddAnimation(new ExplosionAnimation(_rectangleCollider.shape.Center));
+            gameLevel.AddAnimation(new ExplosionAnimation(_rectangleCollider.shape.Center - new Point((int)Width / 2, (int)Height / 2)));
 
             GameManager.GetGameManager().Timers.Add(new Utilities.Timer(1200, () => LevelManager.GetLevelManager().ChangeLevel(new GameOverLevel())));
         }

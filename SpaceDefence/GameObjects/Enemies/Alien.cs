@@ -61,11 +61,11 @@ namespace SpaceDefence.GameObjects.Enemies
         private void RandomMove()
         {
             GameManager gm = GameManager.GetGameManager();
-            _circleCollider.Center = gm.RandomScreenLocation();
+            _circleCollider.Center = GetRandomLevelLocation();
 
             Vector2 centerOfPlayer = gm.Player.Center.ToVector2();
             while ((_circleCollider.Center - centerOfPlayer).Length() < PlayerClearance)
-                _circleCollider.Center = gm.RandomScreenLocation();
+                _circleCollider.Center = GetRandomLevelLocation();
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -123,6 +123,12 @@ namespace SpaceDefence.GameObjects.Enemies
             }
 
             LevelManager.GetLevelManager().CurrentLevel.AddAnimation(new ExplosionAnimation(_circleCollider.Center.ToPoint()));
+        }
+
+        private Vector2 GetRandomLevelLocation()
+        {
+            GameManager gm = GameManager.GetGameManager();
+            return new Vector2(gm.RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX), gm.RNG.Next(SpaceDefence.MINY, SpaceDefence.MAXY));
         }
 
     }

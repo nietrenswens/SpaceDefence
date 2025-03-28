@@ -42,17 +42,23 @@ namespace SpaceDefence.GameObjects.Powerups
         public void RandomMove()
         {
             GameManager gm = GameManager.GetGameManager();
-            _rectangleCollider.shape.Location = (gm.RandomScreenLocation() - _rectangleCollider.shape.Size.ToVector2() / 2).ToPoint();
+            _rectangleCollider.shape.Location = (GetRandomLevelLocation() - _rectangleCollider.shape.Size.ToVector2() / 2).ToPoint();
 
             Vector2 centerOfPlayer = gm.Player.Center.ToVector2();
             while ((_rectangleCollider.shape.Center.ToVector2() - centerOfPlayer).Length() < playerClearance)
-                _rectangleCollider.shape.Location = gm.RandomScreenLocation().ToPoint();
+                _rectangleCollider.shape.Location = GetRandomLevelLocation().ToPoint();
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(_texture, _rectangleCollider.shape, Color.White);
             base.Draw(spriteBatch, gameTime);
+        }
+
+        private Vector2 GetRandomLevelLocation()
+        {
+            GameManager gm = GameManager.GetGameManager();
+            return new Vector2(gm.RNG.Next(SpaceDefence.MINX, SpaceDefence.MAXX), gm.RNG.Next(SpaceDefence.MINY, SpaceDefence.MAXY));
         }
 
 
